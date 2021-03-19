@@ -40,9 +40,9 @@ jobs:
       # 运行代码
       - name: execute the task
         env:
-          WAKA_API_KEY: ${{ waka-data.WAKA_API_KEY }}
-          OSS_ENDPOINT: ${{ waka-data.OSS_ENDPOINT }}
-          OSS_ACCESS_KEY_ID: ${{ waka-data.OSS_ACCESS_KEY_ID }}
-          OSS_ACCESS_KEY_SECRET: ${{ waka-data.OSS_ACCESS_KEY_SECRET }}
-          OSS_BUCKET_NAME: ${{ waka-data.OSS_BUCKET_NAME }}
-        run: ./gradlew run --args='--wakaApiKey ${WAKA_API_KEY} --ossEndpoint ${OSS_ENDPOINT} --ossAccessKeyId ${OSS_ACCESS_KEY_ID} --ossAccessKeySecret ${OSS_ACCESS_KEY_SECRET} --ossBucketName ${OSS_BUCKET_NAME}'
+          WAKA_API_KEY: ${{ secrets.WAKA_API_KEY }}
+          OSS_ENDPOINT: ${{ secrets.OSS_ENDPOINT }}
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+          OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
+        run: ./gradlew run --args='--wakaApiKey ${{ secrets.WAKA_API_KEY }} --ossEndpoint ${{ secrets.OSS_ENDPOINT }} --ossAccessKeyId ${{ secrets.OSS_ACCESS_KEY_ID }} --ossAccessKeySecret ${{ secrets.OSS_ACCESS_KEY_SECRET }} --ossBucketName ${{ secrets.OSS_BUCKET_NAME }}
