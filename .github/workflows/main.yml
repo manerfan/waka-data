@@ -45,4 +45,4 @@ jobs:
           OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
           OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
           OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
-        run: ./gradlew run --args='--wakaApiKey ${{ secrets.WAKA_API_KEY }} --ossEndpoint ${{ secrets.OSS_ENDPOINT }} --ossAccessKeyId ${{ secrets.OSS_ACCESS_KEY_ID }} --ossAccessKeySecret ${{ secrets.OSS_ACCESS_KEY_SECRET }} --ossBucketName ${{ secrets.OSS_BUCKET_NAME }}
+        run: ./gradlew run --args='--wakaApiKey ${{ secrets.WAKA_API_KEY }} --ossEndpoint ${{ secrets.OSS_ENDPOINT }} --ossAccessKeyId ${{ secrets.OSS_ACCESS_KEY_ID }} --ossAccessKeySecret ${{ secrets.OSS_ACCESS_KEY_SECRET }} --ossBucketName ${{ secrets.OSS_BUCKET_NAME }}'
