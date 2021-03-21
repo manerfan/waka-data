@@ -1,6 +1,13 @@
 = Waka-data
 
+image:https://github.com/manerfan/waka-data/actions/workflows/main.yml/badge.svg[link="https://github.com/manerfan/waka-data/actions/workflows/main.yml"]
+
+image:https://img.shields.io/badge/jdk-11-informational[link="http://openjdk.java.net/projects/jdk/11"]
+image:https://img.shields.io/badge/kotlin-1.4-green[link="https://kotlinlang.org"]
 image:https://img.shields.io/badge/vert.x-4.0.3-purple.svg[link="https://vertx.io"]
+
+image:https://img.shields.io/github/followers/manerfan?style=social[GitHub followers]
+image:https://img.shields.io/github/stars/manerfan/waka-data?style=social[GitHub Repo stars]
 
 This application was generated using http://start.vertx.io
 

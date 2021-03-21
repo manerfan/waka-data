@@ -16,6 +16,8 @@ import io.vertx.reactivex.ext.web.client.WebClient
 import io.vertx.reactivex.ext.web.codec.BodyCodec
 import java.nio.file.Paths
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -73,8 +75,8 @@ class WakaCollectVerticle : AbstractVerticle() {
 
         vertx.eventBus().consumer<Long>(WAKA_COLLECT).handler { message ->
             val intervalDays = message.body()
-            val start = LocalDate.now().minusDays(intervalDays)
-            val end = LocalDate.now().minusDays(1)
+            val start = ZonedDateTime.now(DEF_ZONEID).minusDays(intervalDays)
+            val end = ZonedDateTime.now(DEF_ZONEID).minusDays(1)
 
             Flowable.fromArray(
                 this::user,
@@ -106,34 +108,34 @@ class WakaCollectVerticle : AbstractVerticle() {
      * [user](https://wakatime.com/developers#users)
      */
     @Suppress("UNUSED_PARAMETER")
-    private fun user(start: LocalDate, end: LocalDate) =
+    private fun user(start: ZonedDateTime, end: ZonedDateTime) =
         getInfos<JsonObject>(node = "user")
 
     /**
      * [summaries](https://wakatime.com/developers#summaries)
      */
-    private fun summaries(start: LocalDate, end: LocalDate) =
+    private fun summaries(start: ZonedDateTime, end: ZonedDateTime) =
         getInfos<JsonArray>(path = "summaries", withPeriod = true, start = start, end = end)
 
     /**
      * [stats](https://wakatime.com/developers#stats)
      */
     @Suppress("UNUSED_PARAMETER")
-    private fun lastWeekStats(start: LocalDate, end: LocalDate) =
+    private fun lastWeekStats(start: ZonedDateTime, end: ZonedDateTime) =
         getInfos<JsonObject>(path = "stats/last_7_days", node = "lastWeekStats")
 
     /**
      * [durations](https://wakatime.com/developers#durations)
      */
     @Suppress("UNUSED_PARAMETER")
-    private fun durations(start: LocalDate, end: LocalDate) =
+    private fun durations(start: ZonedDateTime, end: ZonedDateTime) =
         getInfos<JsonArray>(path = "durations", withDate = true, date = end)
 
     /**
      * [all_time_since_today](https://wakatime.com/developers#all_time_since_today)
      */
     @Suppress("UNUSED_PARAMETER")
-    private fun allTimeSineToday(start: LocalDate, end: LocalDate) =
+    private fun allTimeSineToday(start: ZonedDateTime, end: ZonedDateTime) =
         getInfos<JsonArray>(path = "all_time_since_today", node = "allTimeSineToday")
 
     /**
@@ -143,10 +145,10 @@ class WakaCollectVerticle : AbstractVerticle() {
     private fun <T> getInfos(
         path: String = "", node: String = path,
         withDate: Boolean = false,
-        date: LocalDate = LocalDate.now().minusDays(1),
+        date: ZonedDateTime = ZonedDateTime.now(DEF_ZONEID).minusDays(1),
         withPeriod: Boolean = false,
-        start: LocalDate = LocalDate.now().minusDays(1),
-        end: LocalDate = LocalDate.now().minusDays(1)
+        start: ZonedDateTime = ZonedDateTime.now(DEF_ZONEID).minusDays(1),
+        end: ZonedDateTime = ZonedDateTime.now(DEF_ZONEID).minusDays(1)
     ): Single<JsonObject> {
         val request = webClient.get(Paths.get(uriVersion, "/users/current/", path).toUri().path).addNecessaryParams()
 
@@ -173,13 +175,13 @@ class WakaCollectVerticle : AbstractVerticle() {
     /**
      * add start & end parameters
      */
-    private fun <T> HttpRequest<T>.addPeriodParams(start: LocalDate, end: LocalDate) =
+    private fun <T> HttpRequest<T>.addPeriodParams(start: ZonedDateTime, end: ZonedDateTime) =
         this.addQueryParam("start", start.format(dtf))
             .addQueryParam("end", end.format(dtf))
 
     /**
      * add date parameters
      */
-    private fun <T> HttpRequest<T>.addDateParams(date: LocalDate) =
+    private fun <T> HttpRequest<T>.addDateParams(date: ZonedDateTime) =
         this.addQueryParam("date", date.format(dtf))
 }

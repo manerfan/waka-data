@@ -5,6 +5,8 @@ import com.aliyun.oss.model.PutObjectRequest
 import io.vertx.core.json.JsonObject
 import java.io.ByteArrayInputStream
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -24,7 +26,7 @@ data class OssAccessor(
     private val dtf = DateTimeFormatter.ofPattern("'meta'/yyyy/MM/yyyy.MM.dd.'json'", Locale.SIMPLIFIED_CHINESE)
     private val ossClient = OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret)
 
-    fun putMeta(date: LocalDate, data: JsonObject) {
+    fun putMeta(date: ZonedDateTime, data: JsonObject) {
         ossClient.putObject(
             PutObjectRequest(
                 bucketName,
