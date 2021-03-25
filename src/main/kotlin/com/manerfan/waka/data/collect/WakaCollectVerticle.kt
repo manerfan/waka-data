@@ -91,6 +91,7 @@ class WakaCollectVerticle : AbstractVerticle() {
                         .toFlowable()
                 }
                 .reduce(JsonObject::mergeIn)
+                .retry(3)
                 .doFinally { message.reply("DONE").also { logger.info("<== Waka Data Collect") } }
                 .subscribe {
                     logger.info("--> Waka Data Collect: put to oss")
@@ -162,7 +163,9 @@ class WakaCollectVerticle : AbstractVerticle() {
         return request.`as`(BodyCodec.jsonObject())
             .rxSend()
             .map(HttpResponse<JsonObject>::body)
-            .map { body -> JsonObject().put(node, body.get<T>("data")) }
+            .map { body ->
+                JsonObject().put(node, body.get<T>("data") ?: throw IllegalStateException("Data is null on $path!"))
+            }
     }
 
     /**

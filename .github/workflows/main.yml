@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
   # 定时任务
   schedule:
-    - cron: '10 16 * * *'
+    # 09:00:00 +08
+    - cron: '0 1 * * *'
 
 # 执行的任务
 jobs:
@@ -15,13 +16,14 @@ jobs:
     runs-on: ubuntu-latest
     # 步骤
     steps:
-      # down代码
+      # 代码
       - name: checkout
         uses: actions/checkout@v2
         with:
+          # 指定分支
           ref: 'main'
       # 设置jdk
-      - name: Set up JDK 11
+      - name: set up jdk 11
         uses: actions/setup-java@v1
         with:
           java-version: 11
@@ -39,10 +41,17 @@ jobs:
             ${{ runner.os }}-gradle-
       # 运行代码
       - name: execute the task
-        env:
-          WAKA_API_KEY: ${{ secrets.WAKA_API_KEY }}
-          OSS_ENDPOINT: ${{ secrets.OSS_ENDPOINT }}
-          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
-          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
-          OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
-        run: ./gradlew run --args='--wakaApiKey ${{ secrets.WAKA_API_KEY }} --ossEndpoint ${{ secrets.OSS_ENDPOINT }} --ossAccessKeyId ${{ secrets.OSS_ACCESS_KEY_ID }} --ossAccessKeySecret ${{ secrets.OSS_ACCESS_KEY_SECRET }} --ossBucketName ${{ secrets.OSS_BUCKET_NAME }}'
+        # env:
+        #   WAKA_API_KEY: ${{ secrets.WAKA_API_KEY }}
+        #   OSS_ENDPOINT: ${{ secrets.OSS_ENDPOINT }}
+        #   OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+        #   OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+        #   OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
+        run: >
+          ./gradlew run --args='
+          --wakaApiKey ${{ secrets.WAKA_API_KEY }}
+          --ossEndpoint ${{ secrets.OSS_ENDPOINT }}
+          --ossAccessKeyId ${{ secrets.OSS_ACCESS_KEY_ID }}
+          --ossAccessKeySecret ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+          --ossBucketName ${{ secrets.OSS_BUCKET_NAME }}
+          '
