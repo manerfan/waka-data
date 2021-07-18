@@ -1,6 +1,6 @@
 package com.manerfan.waka.data
 
-import com.manerfan.waka.data.collect.WakaCollectVerticle
+import com.manerfan.waka.data.verticles.collect.WakaCollectVerticle
 import io.vertx.core.Vertx
 import io.vertx.junit5.VertxExtension
 import io.vertx.junit5.VertxTestContext

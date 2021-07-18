@@ -2,7 +2,9 @@
 
 package com.manerfan.waka.data
 
-import com.manerfan.waka.data.collect.WakaCollectVerticle
+import com.manerfan.waka.data.verticles.collect.WakaCollectVerticle
+import com.manerfan.waka.data.verticles.oss.OssAccessorVerticle
+import com.manerfan.waka.data.verticles.stat.WakaStatVerticle
 import io.reactivex.Single
 import io.vertx.core.cli.CLI
 import io.vertx.core.cli.annotations.CLIConfigurator
@@ -28,10 +30,12 @@ fun main(args: Array<String>) {
     logger.info("==> Start Action")
 
     //// parse commands
+    //// 解析命令行参数
 
     val cli = CLI.create(WakaCli::class.java)
     val command = cli.parse(args.asList(), false)
 
+    // display help
     if (!command.isValid || command.isAskingForHelp) {
         val builder = StringBuilder()
         cli.usage(builder)
@@ -39,33 +43,29 @@ fun main(args: Array<String>) {
         return vertx.close()
     }
 
-    //// prepare shared data
+    //// prepare vertex shared data
+    //// 将命令行参数转为vertx shared data供各Verticle使用
 
     val wakaCli = WakaCli()
     CLIConfigurator.inject(command, wakaCli)
     wakaCli.toSharedData(vertx)
 
-    //// deploy& collect & statistics
-
-    Single.merge(
+    //// deploy & collect & statistics
+    listOf(
+        vertx.rxDeployVerticle(WakaCollectVerticle()).doOnSubscribe { logger.info("==> Deploy WakaCollectVerticle") },
+        vertx.rxDeployVerticle(OssAccessorVerticle()).doOnSubscribe { logger.info("==> Deploy OssAccessorVerticle") },
+        vertx.rxDeployVerticle(WakaStatVerticle()).doOnSubscribe { logger.info("==> Deploy WakaStatVerticle") }
+    ).chain().subscribe { _ ->
         listOf(
-            vertx.rxDeployVerticle(WakaCollectVerticle())
-                .doOnSubscribe { logger.info("==> Deploy WakaCollectVerticle") }
-        )
-    ).switchMap {
-        Single.merge(
-            listOf<Single<Message<String>>>(
-                // waka data collect
-                vertx.eventBus().rxRequest<String>(WakaCollectVerticle.WAKA_COLLECT, 7L)
-                    .doOnSubscribe { logger.info("==> Waka Data Collect") },
-                // TODO waka data statistics
-                Single.just<Message<String>>(Message(null)).doOnSubscribe { logger.info("==> Waka Data Statistics") },
-            )
-        )
-    }.doFinally {
-        logger.info("<== Close Action")
-        vertx.close()
-    }.subscribe()
+            // waka data collect
+            vertx.eventBus().rxRequest(WakaCollectVerticle.WAKA_COLLECT, 7L),
+            // TODO waka data statistics
+            Single.just<Message<String>>(Message(null)).doOnSubscribe { logger.info("==> Waka Data Statistics") }
+        ).chain().doFinally {
+            logger.info("<== Close Action")
+            vertx.close()
+        }.subscribe()
+    }
 }
 
 @Name("waka")
@@ -114,6 +114,20 @@ class WakaCli {
             required = true
         ) set
 
+    var dingRobotWebhook: String = ""
+        @Option(
+            longName = "dingRobotWebhook",
+            argName = "dingding robot webhook",
+            required = false
+        ) set
+
+    var dingRobotSecret: String = ""
+        @Option(
+            longName = "dingRobotSecret",
+            argName = "dingding robot secret",
+            required = false
+        ) set
+
     fun toSharedData(vertx: Vertx) {
         vertx.sharedData().getLocalMap<String, String>(WAKA_CONFIG_KEY).put(WAKA_API_KEY, apiKey)
         vertx.sharedData().getLocalMap<String, String>(OSS_CONFIG_KEY).apply {
@@ -122,5 +136,11 @@ class WakaCli {
             put(OSS_ACCESS_KEY_SECRET, ossAccessKeySecret)
             put(OSS_BUCKET_NAME, ossBucketName)
         }
+        vertx.sharedData().getLocalMap<String, String>(DING_ROBOT_CONFIG_KEY).apply {
+            put(DING_ROBOT_WEB_HOOK, dingRobotWebhook)
+            put(DING_ROBOT_SECRET, dingRobotSecret)
+        }
     }
 }
+
+fun <R : Any> List<Single<R>>.chain() = this.reduce { acc, single -> acc.flatMap { single } }

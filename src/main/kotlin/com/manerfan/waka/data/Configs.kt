@@ -9,6 +9,7 @@ import java.time.ZoneId
  * @date 2021/3/16
  */
 
+
 val DEF_ZONEID = ZoneId.of("Asia/Shanghai")
 
 /**
@@ -49,3 +50,21 @@ const val OSS_ACCESS_KEY_SECRET = "ACCESS_KEY_SECRET"
  * oss bucket name
  */
 const val OSS_BUCKET_NAME = "BUCKET_NAME"
+
+/**
+ * ding robot
+ *
+ * here to [obtain](https://developers.dingtalk.com/document/app/custom-robot-access)
+ */
+const val DING_ROBOT_CONFIG_KEY = "DING_ROBOT_CONFIG_KEY"
+
+/**
+ * webhook for ding robot message
+ */
+const val DING_ROBOT_WEB_HOOK = "DING_ROBOT_WEB_HOOK"
+
+/**
+ * secret for ding robot message
+ */
+const val DING_ROBOT_SECRET = "DING_ROBOT_SECRET"
+

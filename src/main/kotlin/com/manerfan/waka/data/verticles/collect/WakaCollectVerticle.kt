@@ -1,7 +1,11 @@
-package com.manerfan.waka.data.collect
+package com.manerfan.waka.data.verticles.collect
 
 import com.manerfan.waka.data.*
-import com.manerfan.waka.data.utils.OssAccessor
+import com.manerfan.waka.data.models.WakaData
+import com.manerfan.waka.data.verticles.oss.OssAccessorVerticle
+import com.manerfan.waka.data.verticles.oss.OssFilePut
+import com.manerfan.waka.data.verticles.oss.OssFileType
+import com.manerfan.waka.data.verticles.stat.WakaStatVerticle
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.vertx.core.Promise
@@ -15,8 +19,6 @@ import io.vertx.reactivex.ext.web.client.HttpResponse
 import io.vertx.reactivex.ext.web.client.WebClient
 import io.vertx.reactivex.ext.web.codec.BodyCodec
 import java.nio.file.Paths
-import java.time.LocalDate
-import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -30,7 +32,6 @@ import java.util.*
 class WakaCollectVerticle : AbstractVerticle() {
     private lateinit var apiKey: String
     private lateinit var webClient: WebClient
-    private lateinit var ossAccessor: OssAccessor
 
     companion object {
         const val WAKA_COLLECT = "waka.collect"
@@ -50,16 +51,6 @@ class WakaCollectVerticle : AbstractVerticle() {
                 """.trimMargin()
             )
 
-        //// oss
-
-        val ossConfig = vertx.sharedData().getLocalMap<String, String>(OSS_CONFIG_KEY)
-        ossAccessor = OssAccessor(
-            ossConfig[OSS_ENDPOINT],
-            ossConfig[OSS_ACCESS_KEY_ID],
-            ossConfig[OSS_ACCESS_KEY_SECRET],
-            ossConfig[OSS_BUCKET_NAME]
-        )
-
         //// web client
 
         webClient = WebClient.create(
@@ -74,6 +65,8 @@ class WakaCollectVerticle : AbstractVerticle() {
         //// waka time data collect event consumer
 
         vertx.eventBus().consumer<Long>(WAKA_COLLECT).handler { message ->
+            logger.info("==> Waka Data Collect")
+
             val intervalDays = message.body()
             val start = ZonedDateTime.now(DEF_ZONEID).minusDays(intervalDays)
             val end = ZonedDateTime.now(DEF_ZONEID).minusDays(1)
@@ -94,14 +87,20 @@ class WakaCollectVerticle : AbstractVerticle() {
                 .retry(3)
                 .doFinally { message.reply("DONE").also { logger.info("<== Waka Data Collect") } }
                 .subscribe {
-                    logger.info("--> Waka Data Collect: put to oss")
-                    ossAccessor.putMeta(end, it)
+                    vertx.eventBus().request<String>(OssAccessorVerticle.OSS_PUT, OssFilePut(OssFileType.META, end, it)) {
+                        logger.info("--> Waka Data Collect: put to oss")
+                    }
+                    vertx.eventBus().request<WakaData>(
+                        WakaStatVerticle.WAKA_STAT_DAILY,
+                        mapper.readValue(it.encode(), WakaData::class.java)
+                    )
                 }
-        }.completionHandler { super.start(startFuture) }
+        }
+
+        super.start(startFuture)
     }
 
     override fun stop(stopFuture: Promise<Void>) {
-        ossAccessor.close()
         super.stop(stopFuture)
     }
 
