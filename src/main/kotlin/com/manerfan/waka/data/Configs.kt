@@ -64,9 +64,3 @@ const val DING_ROBOT_CONFIG_KEY = "DING_ROBOT_CONFIG_KEY"
  * webhook for ding robot message
  */
 const val DING_ROBOT_WEB_HOOK = "DING_ROBOT_WEB_HOOK"
-
-/**
- * secret for ding robot message
- */
-const val DING_ROBOT_SECRET = "DING_ROBOT_SECRET"
-

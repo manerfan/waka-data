@@ -2,11 +2,13 @@ package com.manerfan.waka.data.verticles.stat
 
 import com.manerfan.waka.data.*
 import com.manerfan.waka.data.models.*
+import com.manerfan.waka.data.verticles.message.DingMessageVerticle
 import com.manerfan.waka.data.verticles.oss.OssAccessorVerticle
 import com.manerfan.waka.data.verticles.oss.OssFilePut
 import com.manerfan.waka.data.verticles.oss.OssFileType
 import com.manerfan.waka.data.verticles.oss.ShareableOss
 import io.vertx.core.Promise
+import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import java.time.LocalDate
@@ -49,18 +51,26 @@ class WakaStatVerticle : AbstractVerticle() {
                 return@handler
             }
 
-            // 日统计数据保存
-            vertx.eventBus().request<String>(
-                OssAccessorVerticle.OSS_PUT,
-                OssFilePut(
-                    OssFileType.STAT_DAILY,
-                    LocalDate.parse(statData.range.start, DateTimeFormatter.ISO_DATE).atStartOfDay(DEF_ZONEID),
-                    statData
+            listOf(
+                // 日统计数据保存
+                vertx.eventBus().rxRequest<String>(
+                    OssAccessorVerticle.OSS_PUT,
+                    OssFilePut(
+                        OssFileType.STAT_DAILY,
+                        LocalDate.parse(statData.range.start, DateTimeFormatter.ISO_DATE).atStartOfDay(DEF_ZONEID),
+                        statData
+                    ),
+                    DeliveryOptions().apply { codecName = OssFilePut::class.java.simpleName }
+                ),
+                vertx.eventBus().rxRequest(
+                    DingMessageVerticle.DING_MESSAGE,
+                    statData,
+                    DeliveryOptions().apply { codecName = StatData::class.java.simpleName }
                 )
-            ) {
+            ).chain().doFinally {
                 logger.info("--> Waka Data Daily Stat: put to oss")
                 message.reply("DONE")
-            }
+            }.subscribe()
         }
 
         // 统计
@@ -69,11 +79,11 @@ class WakaStatVerticle : AbstractVerticle() {
             message.reply("DONE")
 
             // 补数据用 - 日维度
-//            patchDailyStat(
-//                message,
-//                LocalDate.of(2021, 3, 1).atStartOfDay(DEF_ZONEID),
-//                LocalDate.of(2021, 7, 25).atStartOfDay(DEF_ZONEID)
-//            )
+            // patchDailyStat(
+            //     message,
+            //     LocalDate.of(2021, 3, 1).atStartOfDay(DEF_ZONEID),
+            //     LocalDate.of(2021, 7, 25).atStartOfDay(DEF_ZONEID)
+            // )
         }
 
         super.start(stopFuture)
