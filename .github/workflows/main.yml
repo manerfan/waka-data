@@ -54,4 +54,6 @@ jobs:
           --ossAccessKeyId ${{ secrets.OSS_ACCESS_KEY_ID }}
           --ossAccessKeySecret ${{ secrets.OSS_ACCESS_KEY_SECRET }}
           --ossBucketName ${{ secrets.OSS_BUCKET_NAME }}
+          --dingRobotWebhook ${{ secrets.DING_ROBOT_WEBHOOK }}
+          --reportHomeUrl ${{ secrets.REPORT_HOME_URL }}
           '

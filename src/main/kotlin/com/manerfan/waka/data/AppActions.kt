@@ -3,7 +3,7 @@
 package com.manerfan.waka.data
 
 import com.manerfan.waka.data.verticles.collect.WakaCollectVerticle
-import com.manerfan.waka.data.verticles.message.DingTalkVerticle
+import com.manerfan.waka.data.verticles.message.DingMessageVerticle
 import com.manerfan.waka.data.verticles.oss.OssAccessorVerticle
 import com.manerfan.waka.data.verticles.stat.WakaStatVerticle
 import io.vertx.core.cli.CLI
@@ -55,7 +55,7 @@ fun main(args: Array<String>) {
         vertx.rxDeployVerticle(WakaCollectVerticle()).doOnSubscribe { logger.info("==> Deploy WakaCollectVerticle") },
         vertx.rxDeployVerticle(WakaStatVerticle()).doOnSubscribe { logger.info("==> Deploy WakaStatVerticle") },
         vertx.rxDeployVerticle(OssAccessorVerticle()).doOnSubscribe { logger.info("==> Deploy OssAccessorVerticle") },
-        vertx.rxDeployVerticle(DingTalkVerticle()).doOnSubscribe { logger.info("==> Deploy DingTalkVerticle") }
+        vertx.rxDeployVerticle(DingMessageVerticle()).doOnSubscribe { logger.info("==> Deploy DingTalkVerticle") }
     ).chain().subscribe { _ ->
         listOf(
             // waka data collect
@@ -122,10 +122,10 @@ class WakaCli {
             required = false
         ) set
 
-    var dingRobotSecret: String = ""
+    var reportHomeUrl: String = ""
         @Option(
-            longName = "dingRobotSecret",
-            argName = "dingding robot secret",
+            longName = "reportHomeUrl",
+            argName = "report home url",
             required = false
         ) set
 
@@ -139,7 +139,7 @@ class WakaCli {
         }
         vertx.sharedData().getLocalMap<String, String>(DING_ROBOT_CONFIG_KEY).apply {
             put(DING_ROBOT_WEB_HOOK, dingRobotWebhook)
-            put(DING_ROBOT_SECRET, dingRobotSecret)
+            put(REPORT_HOME_URL, reportHomeUrl)
         }
     }
 }

@@ -26,7 +26,7 @@ val ossAccessKeyId: String by project
 val ossAccessKeySecret: String by project
 val ossBucketName: String by project
 val dingRobotWebhook: String by project
-val dingRobotSecret: String by project
+val reportHomeUrl: String by project
 
 val launcherClassName = "com.manerfan.waka.data.AppActions"
 
@@ -50,6 +50,9 @@ dependencies {
   implementation("com.sun.xml.bind:jaxb-core:2.3.0")
   implementation("com.sun.xml.bind:jaxb-impl:2.3.0")
   implementation("javax.activation:activation:1.1.1")
+
+  implementation("com.dingtalk.open:dingtalk-openapi-sdk:2020032501")
+  implementation("net.steppschuh.markdowngenerator:markdowngenerator:1.3.1.1")
 
   implementation("ch.qos.logback:logback-classic:1.1.8")
 
@@ -79,7 +82,7 @@ tasks.withType<JavaExec> {
   args = listOf("run",
     "--wakaApiKey=$wakaApiKey",
     "--ossEndpoint=$ossEndpoint", "--ossAccessKeyId=$ossAccessKeyId", "--ossAccessKeySecret=$ossAccessKeySecret", "--ossBucketName=$ossBucketName",
-    "--dingRobotWebhook=$dingRobotWebhook", "--dingRobotSecret=$dingRobotSecret",
+    "--dingRobotWebhook=$dingRobotWebhook", "--reportHomeUrl=$reportHomeUrl",
     "--illegal-access=deny"
   )
 }
