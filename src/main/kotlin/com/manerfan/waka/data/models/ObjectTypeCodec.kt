@@ -30,7 +30,7 @@ class ObjectTypeCodec<T> : MessageCodec<T, T> {
 
     override fun transform(s: T): T = s
 
-    override fun name(): String = "OssPutMetaCodec"
+    override fun name(): String = type.type.typeName
 
     /**
      * -1 for a user codec.

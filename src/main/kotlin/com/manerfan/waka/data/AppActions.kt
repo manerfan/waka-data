@@ -3,16 +3,16 @@
 package com.manerfan.waka.data
 
 import com.manerfan.waka.data.verticles.collect.WakaCollectVerticle
+import com.manerfan.waka.data.verticles.message.DingTalkVerticle
 import com.manerfan.waka.data.verticles.oss.OssAccessorVerticle
 import com.manerfan.waka.data.verticles.stat.WakaStatVerticle
-import io.reactivex.Single
 import io.vertx.core.cli.CLI
 import io.vertx.core.cli.annotations.CLIConfigurator
 import io.vertx.core.cli.annotations.Name
 import io.vertx.core.cli.annotations.Option
 import io.vertx.core.cli.annotations.Summary
+import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.reactivex.core.Vertx
-import io.vertx.reactivex.core.eventbus.Message
 import org.slf4j.LoggerFactory
 
 /**
@@ -53,14 +53,15 @@ fun main(args: Array<String>) {
     //// deploy & collect & statistics
     listOf(
         vertx.rxDeployVerticle(WakaCollectVerticle()).doOnSubscribe { logger.info("==> Deploy WakaCollectVerticle") },
+        vertx.rxDeployVerticle(WakaStatVerticle()).doOnSubscribe { logger.info("==> Deploy WakaStatVerticle") },
         vertx.rxDeployVerticle(OssAccessorVerticle()).doOnSubscribe { logger.info("==> Deploy OssAccessorVerticle") },
-        vertx.rxDeployVerticle(WakaStatVerticle()).doOnSubscribe { logger.info("==> Deploy WakaStatVerticle") }
+        vertx.rxDeployVerticle(DingTalkVerticle()).doOnSubscribe { logger.info("==> Deploy DingTalkVerticle") }
     ).chain().subscribe { _ ->
         listOf(
             // waka data collect
-            vertx.eventBus().rxRequest(WakaCollectVerticle.WAKA_COLLECT, 7L),
-            // TODO waka data statistics
-            Single.just<Message<String>>(Message(null)).doOnSubscribe { logger.info("==> Waka Data Statistics") }
+            vertx.eventBus().rxRequest<String>(WakaCollectVerticle.WAKA_COLLECT, 7L, DeliveryOptions().apply {
+                sendTimeout = 5 * 60 * 1000
+            })
         ).chain().doFinally {
             logger.info("<== Close Action")
             vertx.close()
@@ -142,5 +143,3 @@ class WakaCli {
         }
     }
 }
-
-fun <R : Any> List<Single<R>>.chain() = this.reduce { acc, single -> acc.flatMap { single } }

@@ -46,6 +46,10 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
 
   implementation("com.aliyun.oss:aliyun-sdk-oss:3.10.2")
+  implementation("javax.xml.bind:jaxb-api:2.3.0")
+  implementation("com.sun.xml.bind:jaxb-core:2.3.0")
+  implementation("com.sun.xml.bind:jaxb-impl:2.3.0")
+  implementation("javax.activation:activation:1.1.1")
 
   implementation("ch.qos.logback:logback-classic:1.1.8")
 
@@ -75,6 +79,7 @@ tasks.withType<JavaExec> {
   args = listOf("run",
     "--wakaApiKey=$wakaApiKey",
     "--ossEndpoint=$ossEndpoint", "--ossAccessKeyId=$ossAccessKeyId", "--ossAccessKeySecret=$ossAccessKeySecret", "--ossBucketName=$ossBucketName",
-    "--dingRobotWebhook=$dingRobotWebhook", "--dingRobotSecret=$dingRobotSecret"
+    "--dingRobotWebhook=$dingRobotWebhook", "--dingRobotSecret=$dingRobotSecret",
+    "--illegal-access=deny"
   )
 }

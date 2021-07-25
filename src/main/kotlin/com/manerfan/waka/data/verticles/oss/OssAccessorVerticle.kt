@@ -7,7 +7,7 @@ import com.manerfan.waka.data.*
 import com.manerfan.waka.data.models.ObjectCodec
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
-import io.vertx.core.json.JsonObject
+import io.vertx.core.shareddata.Shareable
 import java.io.ByteArrayInputStream
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -26,8 +26,35 @@ class OssAccessorVerticle : AbstractVerticle() {
 
     companion object {
         const val OSS_PUT = "oss.put"
-        private val dtfMap = mapOf(
-            OssFileType.META to DateTimeFormatter.ofPattern("'meta'/yyyy/MM/yyyy.MM.dd.'json'", Locale.SIMPLIFIED_CHINESE)
+        val dtfMap = mapOf(
+            OssFileType.META to DateTimeFormatter.ofPattern(
+                "'meta'/yyyy/MM/yyyy.MM.dd.'json'",
+                Locale.SIMPLIFIED_CHINESE
+            ),
+            OssFileType.STAT_DAILY to DateTimeFormatter.ofPattern(
+                "'stat/daily'/yyyy/MM/yyyy.MM.dd.'json'",
+                Locale.SIMPLIFIED_CHINESE
+            ),
+            OssFileType.STAT_WEEK to DateTimeFormatter.ofPattern(
+                "'stat/month'/yyyy/MM/yyyy.MM.'W'F.'json'",
+                Locale.SIMPLIFIED_CHINESE
+            ),
+            OssFileType.STAT_MONTH to DateTimeFormatter.ofPattern(
+                "'stat/month'/yyyy/MM/yyyy.MM.'json'",
+                Locale.SIMPLIFIED_CHINESE
+            ),
+            OssFileType.STAT_QUARTER to DateTimeFormatter.ofPattern(
+                "'stat/year'/yyyy/yyyy.'Q'Q.'json'",
+                Locale.SIMPLIFIED_CHINESE
+            ),
+            OssFileType.STAT_HALF_YEAR to DateTimeFormatter.ofPattern(
+                "'stat/year'/yyyy/yyyy.MM.'json'",
+                Locale.SIMPLIFIED_CHINESE
+            ),
+            OssFileType.STAT_YEAR to DateTimeFormatter.ofPattern(
+                "'stat/year'/yyyy/yyyy.'json'",
+                Locale.SIMPLIFIED_CHINESE
+            ),
         )
     }
 
@@ -40,10 +67,14 @@ class OssAccessorVerticle : AbstractVerticle() {
                 ossConfig[OSS_ENDPOINT],
                 ossConfig[OSS_ACCESS_KEY_ID],
                 ossConfig[OSS_ACCESS_KEY_SECRET]
-            )
+            ).also {
+                vertx.sharedData()
+                    .getLocalMap<String, ShareableOss>(OSS_CLIENT)
+                    .put(OSS_CLIENT, ShareableOss(it))
+            }
         } ?: return startFuture.fail(
             """
-                |waka api key must be set in [Launch Arguments] or [Environment Variables]
+                |oss config must be set in [Launch Arguments] or [Environment Variables]
                 |you can obtain waka api key on https://wakatime.com/settings/account
                 """.trimMargin()
         )
@@ -53,8 +84,8 @@ class OssAccessorVerticle : AbstractVerticle() {
         vertx.eventBus().registerDefaultCodec(OssFilePut::class.java, ObjectCodec(OssFilePut::class.java))
         vertx.eventBus().consumer<OssFilePut>(OSS_PUT).handler { message ->
             val content = message.body()
-            //put(content)
-            message.reply("DONE")
+            put(content)
+            message.reply("${content.type}:${content.date}")
         }
 
         super.start(startFuture)
@@ -70,7 +101,7 @@ class OssAccessorVerticle : AbstractVerticle() {
             PutObjectRequest(
                 bucketName,
                 date.format(dtfMap[type]),
-                ByteArrayInputStream(data.encodePrettily().encodeToByteArray())
+                ByteArrayInputStream(mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(data))
             )
         )
     }
@@ -79,12 +110,45 @@ class OssAccessorVerticle : AbstractVerticle() {
 data class OssFilePut(
     val type: OssFileType,
     val date: ZonedDateTime,
-    val data: JsonObject
+    val data: Any
 )
+
+class ShareableOss(val oss: OSS) : Shareable
 
 enum class OssFileType {
     /**
      * 元数据
      */
     META,
+
+    /**
+     * 日维度统计数据
+     */
+    STAT_DAILY,
+
+    /**
+     * 周维度统计数据
+     */
+    STAT_WEEK,
+
+    /**
+     * 月维度统计数据
+     */
+    STAT_MONTH,
+
+    /**
+     * 季度维度统计
+     */
+    STAT_QUARTER,
+
+    /**
+     * 半年维度统计
+     */
+    STAT_HALF_YEAR,
+
+    /**
+     * 年维度统计
+     */
+    STAT_YEAR
+
 }

@@ -51,6 +51,8 @@ const val OSS_ACCESS_KEY_SECRET = "ACCESS_KEY_SECRET"
  */
 const val OSS_BUCKET_NAME = "BUCKET_NAME"
 
+const val OSS_CLIENT = "OSS_CLIENT"
+
 /**
  * ding robot
  *

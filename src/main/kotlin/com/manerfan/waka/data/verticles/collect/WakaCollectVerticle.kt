@@ -9,6 +9,7 @@ import com.manerfan.waka.data.verticles.stat.WakaStatVerticle
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.vertx.core.Promise
+import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.get
@@ -19,6 +20,7 @@ import io.vertx.reactivex.ext.web.client.HttpResponse
 import io.vertx.reactivex.ext.web.client.WebClient
 import io.vertx.reactivex.ext.web.codec.BodyCodec
 import java.nio.file.Paths
+import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -85,15 +87,32 @@ class WakaCollectVerticle : AbstractVerticle() {
                 }
                 .reduce(JsonObject::mergeIn)
                 .retry(3)
-                .doFinally { message.reply("DONE").also { logger.info("<== Waka Data Collect") } }
                 .subscribe {
-                    vertx.eventBus().request<String>(OssAccessorVerticle.OSS_PUT, OssFilePut(OssFileType.META, end, it)) {
-                        logger.info("--> Waka Data Collect: put to oss")
-                    }
-                    vertx.eventBus().request<WakaData>(
-                        WakaStatVerticle.WAKA_STAT_DAILY,
-                        mapper.readValue(it.encode(), WakaData::class.java)
-                    )
+                    listOf(
+                        // 原始数据保存
+                        vertx.eventBus()
+                            .rxRequest<String>(OssAccessorVerticle.OSS_PUT, OssFilePut(OssFileType.META, end, it))
+                            .doOnSubscribe { logger.info("--> Waka Data Collect: put to oss") },
+                        // 日维度统计
+                        vertx.eventBus().rxRequest(
+                            WakaStatVerticle.WAKA_STAT_DAILY,
+                            mapper.readValue(it.encode(), WakaData::class.java),
+                            DeliveryOptions().apply {
+                                codecName = WakaData::class.java.simpleName
+                            }
+                        ),
+                        // 其他维度统计
+                        vertx.eventBus().rxRequest(
+                            WakaStatVerticle.WAKA_STAT,
+                            LocalDate.now().atStartOfDay(DEF_ZONEID),
+                            DeliveryOptions().apply {
+                                codecName = ZonedDateTime::class.java.simpleName
+                                sendTimeout = 5 * 60 * 1000
+                            }
+                        )
+                    ).chain().doFinally {
+                        message.reply("DONE").also { logger.info("<== Waka Data Collect") }
+                    }.subscribe()
                 }
         }
 
