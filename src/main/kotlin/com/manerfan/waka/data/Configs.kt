@@ -64,3 +64,8 @@ const val DING_ROBOT_CONFIG_KEY = "DING_ROBOT_CONFIG_KEY"
  * webhook for ding robot message
  */
 const val DING_ROBOT_WEB_HOOK = "DING_ROBOT_WEB_HOOK"
+
+/**
+ * report home
+ */
+const val REPORT_HOME_URL = "REPORT_HOME_URL"

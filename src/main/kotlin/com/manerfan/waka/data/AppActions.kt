@@ -121,7 +121,14 @@ class WakaCli {
             argName = "dingding robot webhook",
             required = false
         ) set
-    
+
+    var reportHomeUrl: String = ""
+        @Option(
+            longName = "reportHomeUrl",
+            argName = "report home url",
+            required = false
+        ) set
+
     fun toSharedData(vertx: Vertx) {
         vertx.sharedData().getLocalMap<String, String>(WAKA_CONFIG_KEY).put(WAKA_API_KEY, apiKey)
         vertx.sharedData().getLocalMap<String, String>(OSS_CONFIG_KEY).apply {
@@ -132,6 +139,7 @@ class WakaCli {
         }
         vertx.sharedData().getLocalMap<String, String>(DING_ROBOT_CONFIG_KEY).apply {
             put(DING_ROBOT_WEB_HOOK, dingRobotWebhook)
+            put(REPORT_HOME_URL, reportHomeUrl)
         }
     }
 }

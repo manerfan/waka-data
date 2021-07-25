@@ -26,6 +26,7 @@ val ossAccessKeyId: String by project
 val ossAccessKeySecret: String by project
 val ossBucketName: String by project
 val dingRobotWebhook: String by project
+val reportHomeUrl: String by project
 
 val launcherClassName = "com.manerfan.waka.data.AppActions"
 
@@ -81,7 +82,7 @@ tasks.withType<JavaExec> {
   args = listOf("run",
     "--wakaApiKey=$wakaApiKey",
     "--ossEndpoint=$ossEndpoint", "--ossAccessKeyId=$ossAccessKeyId", "--ossAccessKeySecret=$ossAccessKeySecret", "--ossBucketName=$ossBucketName",
-    "--dingRobotWebhook=$dingRobotWebhook",
+    "--dingRobotWebhook=$dingRobotWebhook", "--reportHomeUrl=$reportHomeUrl",
     "--illegal-access=deny"
   )
 }
