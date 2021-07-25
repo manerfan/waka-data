@@ -17,7 +17,7 @@ repositories {
   jcenter()
 }
 
-val vertxVersion = "4.0.3"
+val vertxVersion = "4.1.1"
 val junitJupiterVersion = "5.7.0"
 
 val wakaApiKey: String by project
@@ -25,6 +25,8 @@ val ossEndpoint: String by project
 val ossAccessKeyId: String by project
 val ossAccessKeySecret: String by project
 val ossBucketName: String by project
+val dingRobotWebhook: String by project
+val dingRobotSecret: String by project
 
 val launcherClassName = "com.manerfan.waka.data.AppActions"
 
@@ -36,12 +38,18 @@ dependencies {
   implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
   implementation("io.vertx:vertx-web-client")
   implementation("io.vertx:vertx-rx-java2")
-  implementation("io.vertx:vertx-mysql-client")
+  //implementation("io.vertx:vertx-mysql-client")
+
+  implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.4")
 
   implementation("io.vertx:vertx-lang-kotlin")
   implementation(kotlin("stdlib-jdk8"))
 
   implementation("com.aliyun.oss:aliyun-sdk-oss:3.10.2")
+  implementation("javax.xml.bind:jaxb-api:2.3.0")
+  implementation("com.sun.xml.bind:jaxb-core:2.3.0")
+  implementation("com.sun.xml.bind:jaxb-impl:2.3.0")
+  implementation("javax.activation:activation:1.1.1")
 
   implementation("ch.qos.logback:logback-classic:1.1.8")
 
@@ -68,5 +76,10 @@ tasks.withType<Test> {
 }
 
 tasks.withType<JavaExec> {
-  args = listOf("run", "--wakaApiKey=$wakaApiKey", "--ossEndpoint=$ossEndpoint", "--ossAccessKeyId=$ossAccessKeyId", "--ossAccessKeySecret=$ossAccessKeySecret", "--ossBucketName=$ossBucketName")
+  args = listOf("run",
+    "--wakaApiKey=$wakaApiKey",
+    "--ossEndpoint=$ossEndpoint", "--ossAccessKeyId=$ossAccessKeyId", "--ossAccessKeySecret=$ossAccessKeySecret", "--ossBucketName=$ossBucketName",
+    "--dingRobotWebhook=$dingRobotWebhook", "--dingRobotSecret=$dingRobotSecret",
+    "--illegal-access=deny"
+  )
 }
