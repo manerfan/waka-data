@@ -95,6 +95,8 @@ class DingMessageVerticle : AbstractVerticle() {
                 .apply { this@generateText.generateMdEditors(this) }
                 .text("---")
                 .apply { this@generateText.generateMdFooter(this) }
+                // .text("---")
+                // .apply { this@generateText.generateMdBadge(this) }
                 .toString()
             else -> TextBuilder()
                 .apply { this@generateText.generateMdHeader(this) }
@@ -117,6 +119,8 @@ class DingMessageVerticle : AbstractVerticle() {
                 .apply { this@generateText.generateMdEditors(this) }
                 .text("---")
                 .apply { this@generateText.generateMdFooter(this) }
+                // .text("---")
+                // .apply { this@generateText.generateMdBadge(this) }
                 .toString()
         }
     }
@@ -137,16 +141,33 @@ class DingMessageVerticle : AbstractVerticle() {
             .newParagraph()
             .heading(generateHead(), 4)
             .newParagraph()
-            .text("在编码这件事情上")
+            .text("在搬砖这件事情上")
             .newParagraph()
     }
+
     private fun <T : MarkdownBuilder<T, S>, S : MarkdownElement> StatData.generateMdFooter(builder: MarkdownBuilder<T, S>) {
         builder
-            .text("---")
             .newParagraph()
             .text("@Waka-Waki ")
             .link("▶ Cods On Github", "https://github.com/manerfan/waka-data")
             .newParagraph()
+    }
+
+    private fun <T : MarkdownBuilder<T, S>, S : MarkdownElement> StatData.generateMdBadge(builder: MarkdownBuilder<T, S>) {
+        builder
+            .newParagraph()
+            .image(
+                "waka-data-collect-and-statistics",
+                "https://github.com/manerfan/waka-data/actions/workflows/main.yml/badge.svg"
+            )
+            .newParagraph()
+            .image(
+                "GitHub followers",
+                "https://img.shields.io/github/followers/manerfan?style=social")
+            .newLine()
+            .image(
+                "GitHub Repo stars",
+                "https://img.shields.io/github/stars/manerfan/waka-data?style=social")
     }
 
     private fun <T : MarkdownBuilder<T, S>, S : MarkdownElement> StatData.generateMdCategory(builder: MarkdownBuilder<T, S>) =
@@ -164,7 +185,7 @@ class DingMessageVerticle : AbstractVerticle() {
         name: String
     ) {
         val summaryNodes = getter.invoke(this.summaries).asSequence()
-            .sortedByDescending { summaryNode -> summaryNode.totalSeconds}
+            .sortedByDescending { summaryNode -> summaryNode.totalSeconds }
             .toList()
         val totalSeconds = summaryNodes.sumByDouble { summaryNode -> summaryNode.totalSeconds }
         builder.newParagraph().text("${name}前三占比").newParagraph()

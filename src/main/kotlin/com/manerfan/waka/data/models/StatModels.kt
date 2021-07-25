@@ -217,10 +217,10 @@ data class FavoritePeriod(
 )
 
 enum class Grading(val desc: String, val rangeDesc: String) {
-    DAILY("日报", "这一天"),
-    WEEK("周报", "这一周"),
-    MONTH("月报", "这一月"),
-    QUARTER("季度报", "这季度"),
-    HALF_YEAR("半年报", "这半年"),
-    YEAR("年报", "这一年")
+    DAILY("日统计", "这一天"),
+    WEEK("周统计", "这一周"),
+    MONTH("月度统计", "这一月"),
+    QUARTER("季度统计", "这季度"),
+    HALF_YEAR("半年统计", "这半年"),
+    YEAR("全年统计", "这一年")
 }
