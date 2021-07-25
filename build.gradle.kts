@@ -51,7 +51,8 @@ dependencies {
   implementation("com.sun.xml.bind:jaxb-impl:2.3.0")
   implementation("javax.activation:activation:1.1.1")
 
-  implementation("com.dingtalk.open:dingtalk-openapi-sdk:2020032501")
+  implementation(fileTree("libs"))
+  //implementation("com.dingtalk.open:dingtalk-openapi-sdk:20201230")
   implementation("net.steppschuh.markdowngenerator:markdowngenerator:1.3.1.1")
 
   implementation("ch.qos.logback:logback-classic:1.1.8")
