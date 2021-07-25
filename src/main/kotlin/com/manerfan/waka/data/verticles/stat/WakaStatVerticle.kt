@@ -66,13 +66,14 @@ class WakaStatVerticle : AbstractVerticle() {
         // 统计
         vertx.eventBus().consumer<ZonedDateTime>(WAKA_STAT).handler { message ->
             val date = message.body()
+            message.reply("DONE")
 
             // 补数据用 - 日维度
-            patchDailyStat(
-                message,
-                LocalDate.of(2021, 3, 1).atStartOfDay(DEF_ZONEID),
-                LocalDate.of(2021, 7, 25).atStartOfDay(DEF_ZONEID)
-            )
+//            patchDailyStat(
+//                message,
+//                LocalDate.of(2021, 3, 1).atStartOfDay(DEF_ZONEID),
+//                LocalDate.of(2021, 7, 25).atStartOfDay(DEF_ZONEID)
+//            )
         }
 
         super.start(stopFuture)
