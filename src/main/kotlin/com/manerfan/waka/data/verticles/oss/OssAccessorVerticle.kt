@@ -7,6 +7,7 @@ import com.manerfan.waka.data.*
 import com.manerfan.waka.data.models.ObjectCodec
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
+import io.vertx.core.json.JsonObject
 import io.vertx.core.shareddata.Shareable
 import java.io.ByteArrayInputStream
 import java.time.ZonedDateTime
@@ -96,12 +97,17 @@ class OssAccessorVerticle : AbstractVerticle() {
         super.stop(stopFuture)
     }
 
-    fun put(putMeta: OssFilePut) = with(putMeta) {
+    private fun put(putMeta: OssFilePut) = with(putMeta) {
         ossClient.putObject(
             PutObjectRequest(
                 bucketName,
                 date.format(dtfMap[type]),
-                ByteArrayInputStream(mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(data))
+                ByteArrayInputStream(
+                    when (data) {
+                        is JsonObject -> data.encodePrettily().toByteArray()
+                        else -> mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(data)
+                    }
+                )
             )
         )
     }
