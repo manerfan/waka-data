@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
   # 定时任务
   schedule:
-    # 09:00:00 +08
-    - cron: '0 1 * * *'
+    # 08:00:00 +08
+    - cron: '0 0 * * *'
 
 # 执行的任务
 jobs:
