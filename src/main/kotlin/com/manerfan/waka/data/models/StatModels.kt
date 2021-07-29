@@ -1,7 +1,11 @@
 package com.manerfan.waka.data.models
 
+import com.manerfan.waka.data.verticles.oss.OssFileType
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.*
 
 /**
  * waka statistics
@@ -81,7 +85,7 @@ data class StatSummaryNode(
     /**
      * 该分类下的总时间
      */
-    val totalSeconds: Double
+    var totalDuration: Long
 )
 
 data class StatDurationNode(
@@ -99,7 +103,7 @@ data class StatDurationNode(
     /**
      * 编码时间/毫秒
      */
-    val duration: Long
+    var duration: Long
 ) {
     companion object {
         const val step = 5
@@ -166,7 +170,12 @@ data class Range(
      * 结束时间
      */
     val end: String
-)
+) {
+    companion object {
+        private val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.SIMPLIFIED_CHINESE)
+        fun from(start: ZonedDateTime, end: ZonedDateTime) = Range(dtf.format(start), dtf.format(end))
+    }
+}
 
 data class Stat(
     /**
@@ -190,14 +199,19 @@ data class Stat(
     val favoritePeriod: FavoritePeriod?,
 
     /**
+     * 针对日维度统计
+     */
+    val dailyPeriod: FavoritePeriod?,
+
+    /**
      * 工作日平均每天工作时长
      */
-    val averageSecondsOnWorkDays: Double,
+    val averageDurationsOnWorkDays: Long,
 )
 
 data class MostHardDay(
     val date: String,
-    val totalSeconds: Double
+    val totalDuration: Long
 )
 
 data class MostLateDay(
@@ -216,11 +230,11 @@ data class FavoritePeriod(
     val totalDuration: Long
 )
 
-enum class Grading(val desc: String, val rangeDesc: String) {
-    DAILY("日统计", "这一天"),
-    WEEK("周统计", "这一周"),
-    MONTH("月度统计", "这一月"),
-    QUARTER("季度统计", "这季度"),
-    HALF_YEAR("半年统计", "这半年"),
-    YEAR("全年统计", "这一年")
+enum class Grading(val desc: String, val ossFileType: OssFileType) {
+    DAILY("日统计", OssFileType.STAT_DAILY),
+    WEEK("周统计", OssFileType.STAT_WEEK),
+    MONTH("月度统计", OssFileType.STAT_MONTH),
+    QUARTER("季度统计", OssFileType.STAT_QUARTER),
+    HALF_YEAR("半年统计", OssFileType.STAT_HALF_YEAR),
+    YEAR("全年统计", OssFileType.STAT_YEAR)
 }
