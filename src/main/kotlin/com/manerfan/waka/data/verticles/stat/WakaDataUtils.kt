@@ -34,7 +34,7 @@ data class OssObject(
  */
 fun List<WakaSummaryNode>?.toStatSummaryNodeList() = this.orEmpty().asSequence().map { wakaSummaryNode ->
     StatSummaryNode(wakaSummaryNode.name ?: "unknown", wakaSummaryNode.totalSeconds.times(1000).toLong())
-}.toList()
+}.sortedByDescending(StatSummaryNode::totalDuration).toList()
 
 /**
  * 一天中找到最忙的时间段
