@@ -69,7 +69,7 @@ class WakaStatVerticle : AbstractVerticle() {
             val ossObject = OssObject.from(vertx)
             val date = message.body()
 
-            // 补数据用 - 日维度
+            // 补数据用
 //             patchDailyStat(
 //                 ossObject,
 //                 message,

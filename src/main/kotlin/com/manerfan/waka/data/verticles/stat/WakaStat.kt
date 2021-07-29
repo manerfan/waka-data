@@ -24,6 +24,9 @@ interface WakaStat {
      * 合并StatData列表
      */
     fun List<StatData>?.merge(grading: Grading, range: Range): StatData? = if (this.isNullOrEmpty()) null else {
+
+        // ====== 将所有的数据按类型分类整合 ======
+
         val categoriesGroup = mutableListOf<List<StatSummaryNode>>()
         val editorsGroup = mutableListOf<List<StatSummaryNode>>()
         val languagesGroup = mutableListOf<List<StatSummaryNode>>()
@@ -50,6 +53,8 @@ interface WakaStat {
             statData.stat.mostEarlyDay?.let { mostEarlyDayGroup.add(it) }
         }
 
+        // ====== 分组用的key，组内叠加的value ======
+
         val statSummaryNodeKeyGetter = { ssn: StatSummaryNode -> ssn.name }
         val statSummaryNodeValueGetter = { ssn: StatSummaryNode -> ssn.totalDuration }
         val statSummaryNodeValueAdder =
@@ -59,6 +64,8 @@ interface WakaStat {
         val statDurationNodeValueGetter = { sdn: StatDurationNode -> sdn.duration }
         val statDurationNodeValueAdder =
             { sdn: StatDurationNode, duration: Long -> sdn.duration += duration }
+
+        // ====== 通过以上信息merge数据 ======
 
         val categories =
             categoriesGroup.merge(statSummaryNodeKeyGetter, statSummaryNodeValueGetter, statSummaryNodeValueAdder)
@@ -75,6 +82,8 @@ interface WakaStat {
             durationsGroup.merge(statDurationNodeKeyGetter, statDurationNodeValueGetter, statDurationNodeValueAdder)
         val contributions =
             contributionsGroup.merge(statDurationNodeKeyGetter, statDurationNodeValueGetter, statDurationNodeValueAdder)
+
+        // ====== 构造StatData =====
 
         if (durations.isEmpty()) null
         else StatData(
@@ -101,7 +110,7 @@ interface WakaStat {
 /**
  * 把多个list合并成一个list
  */
-fun <T, V> List<List<T>>.merge(
+fun <T, V : Comparable<V>> List<List<T>>.merge(
     keyGetter: (T) -> String,
     valueGetter: (T) -> V,
     valueAdder: (T, V) -> Unit
@@ -114,23 +123,30 @@ fun <T, V> List<List<T>>.merge(
         return this.first()
     }
 
+    // 拿到第一条数据
     val genesis = this.first().toMutableList()
+    // 按照key封装为map，便于索引
     val genesisMap = genesis.stream().collect(Collectors.toMap(keyGetter) { g -> g })
 
+    // 遍历余下的数据
     this.stream().skip(1)
         .flatMap { subjects -> subjects.stream() }
         .forEach { subject ->
+            // 拿到key
             val key = keyGetter.invoke(subject)
+            // 拿到value
             val value = valueGetter.invoke(subject)
             if (genesisMap.containsKey(key)) {
+                // 存在，则直接加值
                 valueAdder.invoke(genesisMap[key]!!, value)
             } else {
+                // 不存在，则add进列表
                 genesis.add(subject)
                 genesisMap[key] = subject
             }
         }
 
-    return genesis
+    return genesis.asSequence().sortedByDescending(valueGetter).toList()
 }
 
 fun saturdayOfLastWeek() = { temporal: Temporal ->
