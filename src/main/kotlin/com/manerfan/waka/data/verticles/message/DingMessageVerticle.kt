@@ -77,23 +77,28 @@ class DingMessageVerticle : AbstractVerticle() {
     }
 
     private fun StatData.generateText(): String {
-        val devoteTime = this.stat.averageSecondsOnWorkDays.humanReadable()
+        val devoteTime = this.stat.averageDurationsOnWorkDays.humanReadable()
         return when (this.grading) {
             Grading.DAILY -> TextBuilder()
                 .apply { this@generateText.generateMdHeader(this) }
                 .text("---")
                 .newParagraph()
-                .text("从 ").bold(this.stat.mostEarlyDay?.time).text(" 一直到 ").bold(this.stat.mostLateDay?.time)
-                .newParagraph()
+                .apply {
+                    this@generateText.stat.dailyPeriod?.let {
+                        text("从 ").bold(it.from).text(" 到 ").bold(it.end).newParagraph()
+                    }
+                }
                 .text("共投入 ").bold(devoteTime)
                 .newParagraph()
-                .text("---")
+                .apply {
+                    this@generateText.stat.favoritePeriod?.let {
+                        text("最喜欢在 ").bold(it.from).text(" 到 ").bold(it.end).text(" 之间搬砖").newParagraph()
+                    }
+                }
                 .apply { this@generateText.generateMdCategory(this) }
-                .text("---")
+                .apply { this@generateText.generateMdProject(this) }
                 .apply { this@generateText.generateMdLanguages(this) }
-                .text("---")
                 .apply { this@generateText.generateMdEditors(this) }
-                .text("---")
                 .apply { this@generateText.generateMdFooter(this) }
                 // .text("---")
                 // .apply { this@generateText.generateMdBadge(this) }
@@ -104,20 +109,25 @@ class DingMessageVerticle : AbstractVerticle() {
                 .newParagraph()
                 .text("平均每天投入 ").bold(devoteTime)
                 .newParagraph()
-                .bold(this.stat.mostHardDay?.date).text(" 最辛苦，共投入")
-                .bold(this.stat.mostHardDay?.totalSeconds?.humanReadable())
-                .newParagraph()
-                .bold(this.stat.mostLateDay?.date).text(" 工作最晚，一直到 ").bold(this.stat.mostLateDay?.time)
-                .newParagraph()
-                .bold(this.stat.mostLateDay?.date).text(" 工作最早，").bold(this.stat.mostLateDay?.time).text(" 便启动战斗模式")
-                .newParagraph()
-                .text("---")
+                .apply {
+                    this@generateText.stat.mostHardDay?.let {
+                        bold(it.date).text(" 最辛苦，共投入").bold(it.totalDuration.humanReadable()).newParagraph()
+                    }
+                }
+                .apply {
+                    this@generateText.stat.mostLateDay?.let {
+                        bold(it.date).text(" 工作最晚，一直到 ").bold(it.time).newParagraph()
+                    }
+                }
+                .apply {
+                    this@generateText.stat.mostEarlyDay?.let {
+                        bold(it.date).text(" 工作最早，").bold(it.time).text(" 便启动战斗模式").newParagraph()
+                    }
+                }
                 .apply { this@generateText.generateMdCategory(this) }
-                .text("---")
+                .apply { this@generateText.generateMdProject(this) }
                 .apply { this@generateText.generateMdLanguages(this) }
-                .text("---")
                 .apply { this@generateText.generateMdEditors(this) }
-                .text("---")
                 .apply { this@generateText.generateMdFooter(this) }
                 // .text("---")
                 // .apply { this@generateText.generateMdBadge(this) }
@@ -127,12 +137,12 @@ class DingMessageVerticle : AbstractVerticle() {
 
     private fun StatData.generateTitle() = when (this.grading) {
         Grading.DAILY -> "${this.grading.desc}(${this.range.start})"
-        else -> "${this.grading.desc}(${this.range.start} ~ ${this.range.end})"
+        else -> this.grading.desc
     }
 
     private fun StatData.generateHead() = when (this.grading) {
-        Grading.DAILY -> "${this.range.start} ${this.grading.rangeDesc}"
-        else -> "${this.range.start} ~ ${this.range.end} ${this.grading.rangeDesc}"
+        Grading.DAILY -> "${this.range.start} 这一天"
+        else -> "${this.range.start} ~ ${this.range.end}"
     }
 
     private fun <T : MarkdownBuilder<T, S>, S : MarkdownElement> StatData.generateMdHeader(builder: MarkdownBuilder<T, S>) {
@@ -148,8 +158,10 @@ class DingMessageVerticle : AbstractVerticle() {
     private fun <T : MarkdownBuilder<T, S>, S : MarkdownElement> StatData.generateMdFooter(builder: MarkdownBuilder<T, S>) {
         builder
             .newParagraph()
+            .text("---")
+            .newParagraph()
             .text("@Waka-Waki ")
-            .link("▶ Cods On Github", "https://github.com/manerfan/waka-data")
+            .link("▶ Codes On Github", "https://github.com/manerfan/waka-data")
             .newParagraph()
     }
 
@@ -163,21 +175,26 @@ class DingMessageVerticle : AbstractVerticle() {
             .newParagraph()
             .image(
                 "GitHub followers",
-                "https://img.shields.io/github/followers/manerfan?style=social")
+                "https://img.shields.io/github/followers/manerfan?style=social"
+            )
             .newLine()
             .image(
                 "GitHub Repo stars",
-                "https://img.shields.io/github/stars/manerfan/waka-data?style=social")
+                "https://img.shields.io/github/stars/manerfan/waka-data?style=social"
+            )
     }
 
     private fun <T : MarkdownBuilder<T, S>, S : MarkdownElement> StatData.generateMdCategory(builder: MarkdownBuilder<T, S>) =
-        this.generateSummaries(builder, StatSummary::categories, "操作")
+        this.generateSummaries(builder, StatSummary::categories, "行为操作")
+
+    private fun <T : MarkdownBuilder<T, S>, S : MarkdownElement> StatData.generateMdProject(builder: MarkdownBuilder<T, S>) =
+        this.generateSummaries(builder, StatSummary::projects, "工程项目")
 
     private fun <T : MarkdownBuilder<T, S>, S : MarkdownElement> StatData.generateMdEditors(builder: MarkdownBuilder<T, S>) =
-        this.generateSummaries(builder, StatSummary::editors, "编辑器")
+        this.generateSummaries(builder, StatSummary::editors, "搬砖工具")
 
     private fun <T : MarkdownBuilder<T, S>, S : MarkdownElement> StatData.generateMdLanguages(builder: MarkdownBuilder<T, S>) =
-        this.generateSummaries(builder, StatSummary::languages, "语言")
+        this.generateSummaries(builder, StatSummary::languages, "编程语言")
 
     private fun <T : MarkdownBuilder<T, S>, S : MarkdownElement> StatData.generateSummaries(
         builder: MarkdownBuilder<T, S>,
@@ -185,20 +202,29 @@ class DingMessageVerticle : AbstractVerticle() {
         name: String
     ) {
         val summaryNodes = getter.invoke(this.summaries).asSequence()
-            .sortedByDescending { summaryNode -> summaryNode.totalSeconds }
+            .sortedByDescending { summaryNode -> summaryNode.totalDuration }
             .toList()
-        val totalSeconds = summaryNodes.sumByDouble { summaryNode -> summaryNode.totalSeconds }
-        builder.newParagraph().text("${name}前三占比").newParagraph()
+        if (summaryNodes.isEmpty()) {
+            return
+        }
+        val totalDurations = summaryNodes.sumOf { summaryNode -> summaryNode.totalDuration }
+        builder.text("---").newParagraph().bold(name).text("前三占比").newParagraph()
         summaryNodes.stream().limit(3).forEach { summaryNode ->
             builder
-                .text(summaryNode.name)
+                .text("▷ ").text(summaryNode.name).text(" (").text(summaryNode.totalDuration.humanReadable()).text(")")
                 .newParagraph()
-                .progressWithLabel(summaryNode.totalSeconds / totalSeconds)
+                .progressWithLabel(.1 * summaryNode.totalDuration / totalDurations)
                 .newParagraph()
         }
     }
 
-    private fun Duration.humanReadable() = "${this.toHours()}小时${this.toMinutesPart()}分钟"
+    private fun Duration.humanReadable() =
+        if (this.toHours() > 0) {
+            "${this.toHours()}小时" + if (this.toMinutesPart() > 0) "${this.toMinutesPart()}分钟" else ""
+        } else {
+            "${this.toMinutesPart()}分钟"
+        }
+
     private fun Double.humanReadable() = Duration.ofMillis(this.times(1000).toLong()).humanReadable()
     private fun Long.humanReadable() = Duration.ofMillis(this).humanReadable()
 }

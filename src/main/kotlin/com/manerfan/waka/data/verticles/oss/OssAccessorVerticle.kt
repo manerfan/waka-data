@@ -33,27 +33,27 @@ class OssAccessorVerticle : AbstractVerticle() {
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_DAILY to DateTimeFormatter.ofPattern(
-                "'stat/daily'/yyyy/MM/yyyy.MM.dd.'json'",
+                "'stat/daily'/yyyy/MM/yyyy.MM.dd.'daily.json'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_WEEK to DateTimeFormatter.ofPattern(
-                "'stat/month'/yyyy/MM/yyyy.MM.'W'F.'json'",
+                "'stat/month'/yyyy/MM/yyyy.MM.dd.'W'W.'week.json'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_MONTH to DateTimeFormatter.ofPattern(
-                "'stat/month'/yyyy/MM/yyyy.MM.'json'",
+                "'stat/month'/yyyy/MM/yyyy.MM.'month.json'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_QUARTER to DateTimeFormatter.ofPattern(
-                "'stat/year'/yyyy/yyyy.'Q'Q.'json'",
+                "'stat/year'/yyyy/yyyy.MM.'Q'Q.'quarter.json'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_HALF_YEAR to DateTimeFormatter.ofPattern(
-                "'stat/year'/yyyy/yyyy.MM.'json'",
+                "'stat/year'/yyyy/yyyy.MM.'half.year.json'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_YEAR to DateTimeFormatter.ofPattern(
-                "'stat/year'/yyyy/yyyy.'json'",
+                "'stat/year'/yyyy/yyyy.'full.year.json'",
                 Locale.SIMPLIFIED_CHINESE
             ),
         )
