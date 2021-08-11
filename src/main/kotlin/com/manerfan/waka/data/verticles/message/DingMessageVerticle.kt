@@ -17,7 +17,6 @@ import net.steppschuh.markdowngenerator.MarkdownElement
 import net.steppschuh.markdowngenerator.text.TextBuilder
 import java.time.Duration
 
-
 /**
  * 钉消息通知
  *
@@ -110,6 +109,11 @@ class DingMessageVerticle : AbstractVerticle() {
                 .text("平均每天投入 ").bold(devoteTime)
                 .newParagraph()
                 .apply {
+                    this@generateText.stat.favoritePeriod?.let {
+                        text("最喜欢在 ").bold(it.from).text(" 到 ").bold(it.end).text(" 之间搬砖").newParagraph()
+                    }
+                }
+                .apply {
                     this@generateText.stat.mostHardDay?.let {
                         bold(it.date).text(" 最辛苦，共投入").bold(it.totalDuration.humanReadable()).newParagraph()
                     }
@@ -135,10 +139,7 @@ class DingMessageVerticle : AbstractVerticle() {
         }
     }
 
-    private fun StatData.generateTitle() = when (this.grading) {
-        Grading.DAILY -> "${this.grading.desc}(${this.range.start})"
-        else -> this.grading.desc
-    }
+    private fun StatData.generateTitle() = "${this.grading.desc}(${this.range.end})"
 
     private fun StatData.generateHead() = when (this.grading) {
         Grading.DAILY -> "${this.range.start} 这一天"

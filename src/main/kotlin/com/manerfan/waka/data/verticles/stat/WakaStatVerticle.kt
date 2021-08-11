@@ -135,6 +135,7 @@ class WakaStatVerticle : AbstractVerticle() {
     ): Single<Message<String>> {
         return listOf(
             if (oss) {
+                // 保存到OSS
                 vertx.eventBus().rxRequest<String>(
                     OssAccessorVerticle.OSS_PUT,
                     OssFilePut(
@@ -146,6 +147,7 @@ class WakaStatVerticle : AbstractVerticle() {
                 )
             } else Single.just(Message(null)),
             if (message) {
+                // 消息推送
                 vertx.eventBus().rxRequest(
                     DingMessageVerticle.DING_MESSAGE,
                     this,

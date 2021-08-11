@@ -94,7 +94,10 @@ interface WakaStat {
             contributions,
             Stat(
                 contributions.maxByOrNull(StatDurationNode::duration)?.let { MostHardDay(it.period, it.duration) },
-                mostLateDayGroup.maxByOrNull(MostLateDay::time),
+                mostLateDayGroup.minByOrNull(MostLateDay::time)?.let {
+                    // 00:00 ~ 04:00 算最最晚
+                    if (it.time <= "04:00") it else null
+                } ?: mostLateDayGroup.maxByOrNull(MostLateDay::time),
                 mostEarlyDayGroup.minByOrNull(MostEarlyDay::time),
                 durations.favoritePeriod(),
                 null,
