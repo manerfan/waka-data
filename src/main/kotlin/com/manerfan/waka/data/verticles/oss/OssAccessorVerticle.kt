@@ -49,7 +49,7 @@ class OssAccessorVerticle : AbstractVerticle() {
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_HALF_YEAR to DateTimeFormatter.ofPattern(
-                "'stat/year'/yyyy/yyyy.MM.'half.year.json'",
+                "'stat/year'/yyyy/yyyy.'half.year.json'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_YEAR to DateTimeFormatter.ofPattern(
