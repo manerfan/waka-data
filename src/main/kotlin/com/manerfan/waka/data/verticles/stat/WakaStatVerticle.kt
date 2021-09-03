@@ -148,7 +148,7 @@ class WakaStatVerticle : AbstractVerticle() {
             } else Single.just(Message(null)),
             if (message) {
                 // 消息推送
-                vertx.eventBus().rxRequest(
+                vertx.eventBus().rxRequest<String>(
                     DingMessageVerticle.DING_MESSAGE,
                     this,
                     DeliveryOptions().apply { codecName = StatData::class.java.simpleName }
