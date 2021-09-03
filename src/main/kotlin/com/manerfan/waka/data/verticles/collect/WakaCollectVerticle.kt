@@ -10,6 +10,7 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.DeliveryOptions
+import io.vertx.core.eventbus.Message
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.get
@@ -94,7 +95,7 @@ class WakaCollectVerticle : AbstractVerticle() {
                             .rxRequest<String>(OssAccessorVerticle.OSS_PUT, OssFilePut(OssFileType.META, end, it))
                             .doOnSubscribe { logger.info("--> Waka Data Collect: put to oss") },
                         // 日维度统计
-                        vertx.eventBus().rxRequest(
+                        vertx.eventBus().rxRequest<String>(
                             WakaStatVerticle.WAKA_STAT_DAILY,
                             mapper.readValue(it.encode(), WakaData::class.java),
                             DeliveryOptions().apply {
@@ -102,7 +103,7 @@ class WakaCollectVerticle : AbstractVerticle() {
                             }
                         ),
                         // 其他维度统计
-                        vertx.eventBus().rxRequest(
+                        vertx.eventBus().rxRequest<String>(
                             WakaStatVerticle.WAKA_STAT,
                             LocalDate.now().atStartOfDay(DEF_ZONEID),
                             DeliveryOptions().apply {
