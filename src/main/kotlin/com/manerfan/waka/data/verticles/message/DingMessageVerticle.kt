@@ -28,7 +28,7 @@ class DingMessageVerticle : AbstractVerticle() {
     private lateinit var reportHomeUrl: String
 
     companion object {
-        const val DING_MESSAGE = "ding.mesage"
+        const val DING_MESSAGE = "ding.message"
     }
 
     override fun start(startFuture: Promise<Void>) {
@@ -214,7 +214,7 @@ class DingMessageVerticle : AbstractVerticle() {
             builder
                 .text("▷ ").text(summaryNode.name).text(" (").text(summaryNode.totalDuration.humanReadable()).text(")")
                 .newParagraph()
-                .progressWithLabel(.1 * summaryNode.totalDuration / totalDurations)
+                .progressWithLabel(1.0 * summaryNode.totalDuration / totalDurations)
                 .newParagraph()
         }
     }
