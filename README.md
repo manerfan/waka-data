@@ -3,7 +3,7 @@
 [![waka-data-collect-and-statistics](https://github.com/manerfan/waka-data/actions/workflows/main.yml/badge.svg)](https://github.com/manerfan/waka-data/actions/workflows/main.yml)
 
 [![jdk-11](https://img.shields.io/badge/jdk-11-informational)](http://openjdk.java.net/projects/jdk/11)
-[![kotlin-1.4](https://img.shields.io/badge/kotlin-1.5-green)](https://kotlinlang.org)
+[![kotlin-1.5](https://img.shields.io/badge/kotlin-1.5.30-green)](https://kotlinlang.org)
 [![vert.x-4.0.3](https://img.shields.io/badge/vert.x-4.1.1-purple.svg)](https://vertx.io)
 
 [![GitHub followers](https://img.shields.io/github/followers/manerfan?style=social)](https://github.com/manerfan)
