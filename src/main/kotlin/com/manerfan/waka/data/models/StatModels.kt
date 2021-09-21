@@ -230,11 +230,12 @@ data class FavoritePeriod(
     val totalDuration: Long
 )
 
-enum class Grading(val desc: String, val ossFileType: OssFileType) {
-    DAILY("日统计", OssFileType.STAT_DAILY),
-    WEEK("周统计", OssFileType.STAT_WEEK),
-    MONTH("月度统计", OssFileType.STAT_MONTH),
-    QUARTER("季度统计", OssFileType.STAT_QUARTER),
-    HALF_YEAR("半年统计", OssFileType.STAT_HALF_YEAR),
-    YEAR("全年统计", OssFileType.STAT_YEAR)
+enum class Grading(val desc: String, val ossFileType: OssFileType, val message: Boolean) {
+    DAILY("日统计", OssFileType.STAT_DAILY, true),
+    WEEK("周统计", OssFileType.STAT_WEEK, true),
+    MONTH("月度统计", OssFileType.STAT_MONTH, true),
+    QUARTER("季度统计", OssFileType.STAT_QUARTER, true),
+    HALF_YEAR("半年统计", OssFileType.STAT_HALF_YEAR, true),
+    YEAR("全年统计", OssFileType.STAT_YEAR, true),
+    ALL("年全量统计", OssFileType.STAT_ALL_CONTRIBUTIONS, false)
 }

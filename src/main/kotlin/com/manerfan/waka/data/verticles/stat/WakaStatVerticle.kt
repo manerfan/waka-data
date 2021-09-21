@@ -10,6 +10,7 @@ import com.manerfan.waka.data.models.WakaData
 import com.manerfan.waka.data.verticles.message.DingMessageVerticle
 import com.manerfan.waka.data.verticles.oss.OssAccessorVerticle
 import com.manerfan.waka.data.verticles.oss.OssFilePut
+import com.manerfan.waka.data.verticles.stat.dimension.WakaAllContributionsStat
 import com.manerfan.waka.data.verticles.stat.dimension.WakaDailyStat
 import io.reactivex.Single
 import io.vertx.core.Promise
@@ -74,37 +75,44 @@ class WakaStatVerticle : AbstractVerticle() {
 //                 ossObject,
 //                 message,
 //                 LocalDate.of(2021, 3, 1).atStartOfDay(DEF_ZONEID),
-//                 LocalDate.of(2021, 8, 1).atStartOfDay(DEF_ZONEID)
+//                 LocalDate.of(2021, 10, 1).atStartOfDay(DEF_ZONEID)
 //             )
 
 //            patchWeekStat(
 //                ossObject,
 //                message,
 //                LocalDate.of(2021, 3, 1).atStartOfDay(DEF_ZONEID),
-//                LocalDate.of(2021, 8, 1).atStartOfDay(DEF_ZONEID)
+//                LocalDate.of(2021, 10, 1).atStartOfDay(DEF_ZONEID)
 //            )
 
 //            patchMonthStat(
 //                ossObject,
 //                message,
 //                LocalDate.of(2021, 3, 1).atStartOfDay(DEF_ZONEID),
-//                LocalDate.of(2021, 8, 1).atStartOfDay(DEF_ZONEID)
+//                LocalDate.of(2021, 10, 1).atStartOfDay(DEF_ZONEID)
 //            )
 
 //            patchQuarterStat(
 //                ossObject,
 //                message,
 //                LocalDate.of(2021, 4, 1).atStartOfDay(DEF_ZONEID),
-//                LocalDate.of(2021, 8, 1).atStartOfDay(DEF_ZONEID)
+//                LocalDate.of(2021, 10, 1).atStartOfDay(DEF_ZONEID)
 //            )
 
 //            patchHalfYearStat(
 //                ossObject,
 //                message,
 //                LocalDate.of(2021, 1, 1).atStartOfDay(DEF_ZONEID),
-//                LocalDate.of(2021, 8, 1).atStartOfDay(DEF_ZONEID)
+//                LocalDate.of(2021, 10, 1).atStartOfDay(DEF_ZONEID)
 //            )
 
+//            patchAllContributionStat(
+//                ossObject,
+//                message,
+//                LocalDate.of(2021, 1, 2).atStartOfDay(DEF_ZONEID),
+//                LocalDate.of(2021, 10, 1).atStartOfDay(DEF_ZONEID)
+//            )
+//
 //            return@handler
 
             Stream.of(
@@ -113,6 +121,7 @@ class WakaStatVerticle : AbstractVerticle() {
                 WakaQuarterStat(ossObject).stat(date),
                 WakaHalfYearStat(ossObject).stat(date),
                 WakaYearStat(ossObject).stat(date),
+                WakaAllContributionsStat(ossObject).stat(date),
             ).filter(Objects::nonNull)
                 .map { statData -> statData!!.handle() }
                 .collect(Collectors.toList()).let {
@@ -146,7 +155,7 @@ class WakaStatVerticle : AbstractVerticle() {
                     DeliveryOptions().apply { codecName = OssFilePut::class.java.simpleName }
                 )
             } else Single.just(Message(null)),
-            if (message) {
+            if (message && this.grading.message) {
                 // 消息推送
                 vertx.eventBus().rxRequest<String>(
                     DingMessageVerticle.DING_MESSAGE,
@@ -172,6 +181,24 @@ class WakaStatVerticle : AbstractVerticle() {
             .parallel()
             .map { statData -> statData!!.handle(message = false, report = false) }
             .collect(Collectors.toList()).chain().doFinally { message.reply("DONE") }.subscribe()
+    }
+
+    private fun patchAllContributionStat(
+        ossObject: OssObject,
+        message: Message<ZonedDateTime>, start: ZonedDateTime, end: ZonedDateTime
+    ) {
+        val dailyStat = WakaAllContributionsStat(ossObject)
+        var allStatContent = dailyStat.stat(start)
+
+        val limit = start.until(end, ChronoUnit.DAYS)
+
+        Stream.iterate(start) { it.plusDays(1) }.limit(limit).forEach { dateAt ->
+            allStatContent = dailyStat.stat(allStatContent, dateAt)
+        }
+
+        allStatContent?.handle(message = false, report = false)
+            ?.doFinally { message.reply("DONE") }
+            ?.subscribe()
     }
 
     private fun patchWeekStat(

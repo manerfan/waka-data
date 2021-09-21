@@ -79,8 +79,10 @@ fun List<StatDurationNode>?.totalBetween(start: String, end: String): FavoritePe
  */
 fun List<StatDurationNode>?.latest(date: String, criticalTime: String = "04:00"): MostLateDay? = this?.let {
     val durations = it.asSequence().sortedBy { duration -> duration.period }
-    (durations.filter { duration -> duration.period < criticalTime }.firstOrNull() ?: durations.lastOrNull())
-        ?.let { duration -> MostLateDay(date, duration.period) }
+    val latestDuration = durations.filter { duration ->
+        duration.period <= criticalTime
+    }.maxByOrNull { duration -> duration.period } ?: durations.lastOrNull()
+    return latestDuration?.let { duration -> MostLateDay(date, duration.period) }
 }
 
 /**
