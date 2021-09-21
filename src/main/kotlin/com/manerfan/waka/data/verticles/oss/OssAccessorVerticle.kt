@@ -56,6 +56,10 @@ class OssAccessorVerticle : AbstractVerticle() {
                 "'stat/year'/yyyy/yyyy.'full.year.json'",
                 Locale.SIMPLIFIED_CHINESE
             ),
+            OssFileType.STAT_ALL_CONTRIBUTIONS to DateTimeFormatter.ofPattern(
+                "'stat/year'/yyyy/yyyy.'all.contributions.json'",
+                Locale.SIMPLIFIED_CHINESE
+            ),
         )
     }
 
@@ -155,6 +159,10 @@ enum class OssFileType {
     /**
      * 年维度统计
      */
-    STAT_YEAR
+    STAT_YEAR,
 
+    /**
+     * 全年
+     */
+    STAT_ALL_CONTRIBUTIONS
 }
