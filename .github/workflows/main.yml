@@ -44,7 +44,7 @@ jobs:
         with:
           node-version: 14
           cache: npm
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: ~/package-lock.json
       # 缓存加速
       # https://github.com/marketplace/actions/cache
       # https://github.com/actions/cache
