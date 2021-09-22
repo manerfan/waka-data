@@ -45,7 +45,6 @@ jobs:
         with:
           node-version: 14
           # cache: npm
-      - run: npm install
       # 缓存加速
       # https://github.com/marketplace/actions/cache
       # https://github.com/actions/cache
@@ -74,7 +73,11 @@ jobs:
         #   OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
         #   OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
         #   OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
+        working-directory: '~'
         run: >
+          pwd &&
+          ls -a &&
+          npm install &&
           ./gradlew run --args='
           --wakaApiKey ${{ secrets.WAKA_API_KEY }}
           --ossEndpoint ${{ secrets.OSS_ENDPOINT }}
