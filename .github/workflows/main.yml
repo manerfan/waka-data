@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           # 指定分支
-          ref: 'main'
+          ref: 'statistics_support'
       # 设置 jdk
       # https://github.com/marketplace/actions/setup-java-jdk
       # https://github.com/actions/setup-java
@@ -75,8 +75,6 @@ jobs:
         #   OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
         # working-directory: '~'
         run: >
-          pwd &&
-          ls -a &&
           npm install &&
           ./gradlew run --args='
           --wakaApiKey ${{ secrets.WAKA_API_KEY }}
