@@ -34,7 +34,7 @@ jobs:
         with:
           java-version: 11
           java-package: jdk
-          architecture: adopt
+          distribution: adopt
           cache: gradle
       # 设置 nodejs
       # https://github.com/marketplace/actions/setup-node-js-environment
