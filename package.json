@@ -1,0 +1,27 @@
+{
+  "name": "waka-data",
+  "version": "1.0.0",
+  "description": "wakatime data synchronization and analysis",
+  "dependencies": {
+    "puppeteer": "^10.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manerfan/waka-data.git"
+  },
+  "keywords": [
+    "wakatime",
+    "actions",
+    "kotlin",
+    "vertx"
+  ],
+  "author": "manerfan",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/manerfan/waka-data/issues"
+  },
+  "homepage": "https://github.com/manerfan/waka-data#readme"
+}

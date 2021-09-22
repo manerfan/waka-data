@@ -1,3 +1,5 @@
+# https://docs.github.com/en/actions
+
 name: waka-data-collect-and-statistics
 
 # 事件触发
@@ -17,20 +19,36 @@ jobs:
     # 步骤
     steps:
       # 代码
+      # https://github.com/marketplace/actions/checkout
+      # https://github.com/actions/checkout
       - name: checkout
         uses: actions/checkout@v2
         with:
           # 指定分支
           ref: 'main'
-      # 设置jdk
+      # 设置 jdk
+      # https://github.com/marketplace/actions/setup-java-jdk
+      # https://github.com/actions/setup-java
       - name: set up jdk 11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: 11
           java-package: jdk
-          architecture: x64
+          architecture: adopt
+          cache: gradle
+      # 设置 nodejs
+      # https://github.com/marketplace/actions/setup-node-js-environment
+      # https://github.com/actions/setup-node
+      - name: set up nodejs 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          cache: npm
+          cache-dependency-path: subdir/package-lock.json
       # 缓存加速
-      - name: use cache to speed up the time of build
+      # https://github.com/marketplace/actions/cache
+      # https://github.com/actions/cache
+      - name: use cache to speed up the time of build for gradle
         uses: actions/cache@v2
         with:
           path: |
@@ -39,7 +57,15 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      - name: use cache to speed up the time of build for nodejs
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       # 运行代码
+      # https://github.com/marketplace/actions/run-on-architecture
       - name: execute the task
         # env:
         #   WAKA_API_KEY: ${{ secrets.WAKA_API_KEY }}
@@ -48,6 +74,7 @@ jobs:
         #   OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
         #   OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
         run: >
+          npm install &&
           ./gradlew run --args='
           --wakaApiKey ${{ secrets.WAKA_API_KEY }}
           --ossEndpoint ${{ secrets.OSS_ENDPOINT }}
