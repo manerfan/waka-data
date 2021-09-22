@@ -35,7 +35,8 @@ jobs:
           java-version: 11
           java-package: jdk
           distribution: adopt
-          cache: gradle
+          architecture: x64
+          # cache: gradle
       # 设置 nodejs
       # https://github.com/marketplace/actions/setup-node-js-environment
       # https://github.com/actions/setup-node
@@ -43,7 +44,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
-          cache: npm
+          # cache: npm
       # 缓存加速
       # https://github.com/marketplace/actions/cache
       # https://github.com/actions/cache
