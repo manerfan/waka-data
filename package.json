@@ -1,13 +1,12 @@
 {
   "name": "waka-data",
-  "version": "1.0.0",
+  "version": "1.0.0-SNAPSHOT",
   "description": "wakatime data synchronization and analysis",
   "dependencies": {
     "puppeteer": "^10.4.0"
   },
   "devDependencies": {},
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/manerfan/waka-data.git"
