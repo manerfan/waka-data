@@ -74,7 +74,7 @@ jobs:
         #   OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
         #   OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
         run: >
-          npm install &&
+          npm install puppeteer &&
           ./gradlew run --args='
           --wakaApiKey ${{ secrets.WAKA_API_KEY }}
           --ossEndpoint ${{ secrets.OSS_ENDPOINT }}
