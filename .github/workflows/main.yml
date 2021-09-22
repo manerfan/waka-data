@@ -73,7 +73,7 @@ jobs:
         #   OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
         #   OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
         #   OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
-        working-directory: '~'
+        # working-directory: '~'
         run: >
           pwd &&
           ls -a &&
