@@ -1,12 +1,15 @@
 package com.manerfan.waka.data.verticles.stat.dimension
 
+import com.manerfan.waka.data.DEF_ZONEID
 import com.manerfan.waka.data.mapper
 import com.manerfan.waka.data.models.*
 import com.manerfan.waka.data.toLocalDateTime
 import com.manerfan.waka.data.verticles.oss.OssAccessorVerticle
 import com.manerfan.waka.data.verticles.oss.OssFileType
 import com.manerfan.waka.data.verticles.stat.*
+import java.time.LocalDate
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
 
@@ -86,6 +89,10 @@ class WakaDailyStat(private val ossObject: OssObject) : WakaStat {
                     totalSeconds.times(1000).toLong()
                 ),
                 totalSeconds.times(1000).toLong()
+            ),
+            OssAccessorVerticle.format(
+                LocalDate.parse(summary.range.date, DateTimeFormatter.ISO_DATE).atStartOfDay(DEF_ZONEID),
+                Grading.DAILY.ossFileType, "html"
             )
         )
     }

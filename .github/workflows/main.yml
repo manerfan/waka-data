@@ -78,6 +78,7 @@ jobs:
         # working-directory: '~'
         run: >
           npm install &&
+          echo $(date) > github.actions &&
           ./gradlew run --args='
           --wakaApiKey ${{ secrets.WAKA_API_KEY }}
           --ossEndpoint ${{ secrets.OSS_ENDPOINT }}
@@ -88,14 +89,14 @@ jobs:
           --reportHomeUrl ${{ secrets.REPORT_HOME_URL }}
           '
       # add commit & push
-      # https://github.com/marketplace/actions/github-push
-      - name: Commit files
-        run: |
-          git config --local user.email "manerfan@163.com"
-          git config --local user.name "manerfan"
-          git commit -m "Actions Generated" -a
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      # https://github.com/marketplace/actions/git-commit-and-push
+      - name: push changes
+        uses: github-actions-x/commit@v2.8
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          push-branch:  'statistics_support' # ${{ github.ref }}
+          commit-message: 'Actions Generated'
+          force-add: 'true'
+          files: github.actions docs/
+          name: manerfan
+          email: manerfan@163.com
