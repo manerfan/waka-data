@@ -18,7 +18,7 @@ import java.util.stream.Stream
 /**
  * 全年统计
  *
- * @author yongyong.fan
+ * @author maner.fan
  * @date 2021/9/21
  */
 class WakaAllContributionsStat(private val ossObject: OssObject) : WakaStat {
@@ -28,7 +28,7 @@ class WakaAllContributionsStat(private val ossObject: OssObject) : WakaStat {
         val (bucketName, ossClient) = ossObject
         val statAt = date.minusDays(1)
 
-        val allStatFileKey = OssAccessorVerticle.dtfMap[OssFileType.STAT_ALL_CONTRIBUTIONS]!!.format(statAt)
+        val allStatFileKey = OssAccessorVerticle.format(statAt, OssFileType.STAT_ALL_CONTRIBUTIONS)
         val allStatContent = if (ossClient.oss.doesObjectExist(bucketName, allStatFileKey)) {
             ossClient.oss.getObject(bucketName, allStatFileKey).let { oss ->
                 mapper.readValue(oss.objectContent, StatData::class.java)
@@ -45,7 +45,7 @@ class WakaAllContributionsStat(private val ossObject: OssObject) : WakaStat {
 
         val range = Range.from(firstDayOfYear, statAt)
 
-        val statAtFileKey = OssAccessorVerticle.dtfMap[OssFileType.STAT_DAILY]!!.format(statAt)
+        val statAtFileKey = OssAccessorVerticle.format(statAt, OssFileType.STAT_DAILY)
         val statAtContent = if (ossClient.oss.doesObjectExist(bucketName, statAtFileKey)) {
             ossClient.oss.getObject(bucketName, statAtFileKey).let { oss ->
                 mapper.readValue(oss.objectContent, StatData::class.java)

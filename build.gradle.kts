@@ -54,6 +54,8 @@ dependencies {
   implementation(fileTree("libs"))
   //implementation("com.dingtalk.open:dingtalk-openapi-sdk:20201230")
   implementation("net.steppschuh.markdowngenerator:markdowngenerator:1.3.1.1")
+  implementation("com.google.guava:guava:31.0.1-jre")
+  implementation("org.freemarker:freemarker:2.3.31")
 
   implementation("ch.qos.logback:logback-classic:1.1.8")
 

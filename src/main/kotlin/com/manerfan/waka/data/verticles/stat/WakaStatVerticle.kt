@@ -29,7 +29,7 @@ import java.util.stream.Stream
 /**
  * WakaStatVerticle
  *
- * @author yongyong.fan
+ * @author maner.fan
  * @date 2021/7/18
  */
 class WakaStatVerticle : AbstractVerticle() {
@@ -139,7 +139,6 @@ class WakaStatVerticle : AbstractVerticle() {
     private fun StatData.handle(
         oss: Boolean = true,
         message: Boolean = true,
-        report: Boolean = true,
         handle: (() -> Unit)? = null
     ): Single<Message<String>> {
         return listOf(
@@ -179,7 +178,7 @@ class WakaStatVerticle : AbstractVerticle() {
             .map { dailyStat.stat(it) }
             .filter(Objects::nonNull)
             .parallel()
-            .map { statData -> statData!!.handle(message = false, report = false) }
+            .map { statData -> statData!!.handle(message = false) }
             .collect(Collectors.toList()).chain().doFinally { message.reply("DONE") }.subscribe()
     }
 
@@ -196,7 +195,7 @@ class WakaStatVerticle : AbstractVerticle() {
             allStatContent = dailyStat.stat(allStatContent, dateAt)
         }
 
-        allStatContent?.handle(message = false, report = false)
+        allStatContent?.handle(message = false)
             ?.doFinally { message.reply("DONE") }
             ?.subscribe()
     }
@@ -211,7 +210,7 @@ class WakaStatVerticle : AbstractVerticle() {
             .map { dailyStat.stat(it) }
             .filter(Objects::nonNull)
             .parallel()
-            .map { statData -> statData!!.handle(message = false, report = false) }
+            .map { statData -> statData!!.handle(message = false) }
             .collect(Collectors.toList()).chain().doFinally { message.reply("DONE") }.subscribe()
     }
 
@@ -225,7 +224,7 @@ class WakaStatVerticle : AbstractVerticle() {
             .map { dailyStat.stat(it) }
             .filter(Objects::nonNull)
             .parallel()
-            .map { statData -> statData!!.handle(message = false, report = false) }
+            .map { statData -> statData!!.handle(message = false) }
             .collect(Collectors.toList()).chain().doFinally { message.reply("DONE") }.subscribe()
     }
 
@@ -239,7 +238,7 @@ class WakaStatVerticle : AbstractVerticle() {
             .map { dailyStat.stat(it) }
             .filter(Objects::nonNull)
             .parallel()
-            .map { statData -> statData!!.handle(message = false, report = false) }
+            .map { statData -> statData!!.handle(message = false) }
             .collect(Collectors.toList()).chain().doFinally { message.reply("DONE") }.subscribe()
     }
 
@@ -253,7 +252,7 @@ class WakaStatVerticle : AbstractVerticle() {
             .map { dailyStat.stat(it) }
             .filter(Objects::nonNull)
             .parallel()
-            .map { statData -> statData!!.handle(message = false, report = false) }
+            .map { statData -> statData!!.handle(message = false) }
             .collect(Collectors.toList()).chain().doFinally { message.reply("DONE") }.subscribe()
     }
 }

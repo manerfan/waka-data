@@ -26,5 +26,6 @@ hs_err_pid*
 .gradle/
 .DS_Store/
 build/
+node_modules/
 !gradle/wrapper/gradle-wrapper.jar
 !libs/dingtalk-openapi-sdk-20201230.jar

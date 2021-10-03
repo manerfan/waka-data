@@ -15,7 +15,7 @@ import java.util.stream.Stream
 /**
  * 周维度统计
  *
- * @author yongyong.fan
+ * @author maner.fan
  * @date 2021/7/28
  */
 class WakaWeekStat(private val ossObject: OssObject) : WakaStat {
@@ -27,13 +27,12 @@ class WakaWeekStat(private val ossObject: OssObject) : WakaStat {
         logger.info("==> Waka Data Statistics [${Grading.WEEK}]")
 
         val (bucketName, ossClient) = ossObject
-        val dtf = OssAccessorVerticle.dtfMap[OssFileType.STAT_DAILY]!!
 
         val start = date.with(saturdayOfLastWeek())
         val end = start.plusDays(ChronoField.DAY_OF_WEEK.range().maximum - 1)
         return Stream.iterate(start) { d -> d.plusDays(1) }.limit(ChronoField.DAY_OF_WEEK.range().maximum)
             .filter { d -> !d.isAfter(end) }
-            .map { d -> dtf.format(d) }
+            .map { d -> OssAccessorVerticle.format(d, OssFileType.STAT_DAILY) }
             .filter { fileKey -> ossClient.oss.doesObjectExist(bucketName, fileKey) }
             .parallel()
             .map { fileKey ->

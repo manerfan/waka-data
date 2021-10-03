@@ -5,12 +5,12 @@ import com.manerfan.waka.data.models.WakaData
 import com.manerfan.waka.data.verticles.oss.OssAccessorVerticle
 import com.manerfan.waka.data.verticles.oss.OssFilePut
 import com.manerfan.waka.data.verticles.oss.OssFileType
+import com.manerfan.waka.data.verticles.report.WakaReportVerticle
 import com.manerfan.waka.data.verticles.stat.WakaStatVerticle
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.DeliveryOptions
-import io.vertx.core.eventbus.Message
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.get
@@ -105,6 +105,15 @@ class WakaCollectVerticle : AbstractVerticle() {
                         // 其他维度统计
                         vertx.eventBus().rxRequest<String>(
                             WakaStatVerticle.WAKA_STAT,
+                            LocalDate.now().atStartOfDay(DEF_ZONEID),
+                            DeliveryOptions().apply {
+                                codecName = ZonedDateTime::class.java.simpleName
+                                sendTimeout = 5 * 60 * 1000
+                            }
+                        ),
+                        // 生成报告
+                        vertx.eventBus().rxRequest<String>(
+                            WakaReportVerticle.WAKA_REPORT,
                             LocalDate.now().atStartOfDay(DEF_ZONEID),
                             DeliveryOptions().apply {
                                 codecName = ZonedDateTime::class.java.simpleName

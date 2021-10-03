@@ -11,7 +11,7 @@ import java.util.stream.Collectors
 /**
  * 统计
  *
- * @author yongyong.fan
+ * @author maner.fan
  * @date 2021/7/28
  */
 interface WakaStat {

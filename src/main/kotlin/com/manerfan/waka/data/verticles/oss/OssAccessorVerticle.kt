@@ -12,6 +12,7 @@ import io.vertx.core.shareddata.Shareable
 import java.io.ByteArrayInputStream
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.Temporal
 import java.util.*
 
 
@@ -27,40 +28,42 @@ class OssAccessorVerticle : AbstractVerticle() {
 
     companion object {
         const val OSS_PUT = "oss.put"
-        val dtfMap = mapOf(
+        private val dtfMap = mapOf(
             OssFileType.META to DateTimeFormatter.ofPattern(
-                "'meta'/yyyy/MM/yyyy.MM.dd.'json'",
+                "'meta'/yyyy/MM/yyyy.MM.dd.",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_DAILY to DateTimeFormatter.ofPattern(
-                "'stat/daily'/yyyy/MM/yyyy.MM.dd.'daily.json'",
+                "'stat/daily'/yyyy/MM/yyyy.MM.dd.'daily.'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_WEEK to DateTimeFormatter.ofPattern(
-                "'stat/month'/yyyy/MM/yyyy.MM.dd.'W'W.'week.json'",
+                "'stat/month'/yyyy/MM/yyyy.MM.dd.'W'W.'week.'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_MONTH to DateTimeFormatter.ofPattern(
-                "'stat/month'/yyyy/MM/yyyy.MM.'month.json'",
+                "'stat/month'/yyyy/MM/yyyy.MM.'month.'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_QUARTER to DateTimeFormatter.ofPattern(
-                "'stat/year'/yyyy/yyyy.MM.'Q'Q.'quarter.json'",
+                "'stat/year'/yyyy/yyyy.MM.'Q'Q.'quarter.'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_HALF_YEAR to DateTimeFormatter.ofPattern(
-                "'stat/year'/yyyy/yyyy.'half.year.json'",
+                "'stat/year'/yyyy/yyyy.'half.year.'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_YEAR to DateTimeFormatter.ofPattern(
-                "'stat/year'/yyyy/yyyy.'full.year.json'",
+                "'stat/year'/yyyy/yyyy.'full.year.'",
                 Locale.SIMPLIFIED_CHINESE
             ),
             OssFileType.STAT_ALL_CONTRIBUTIONS to DateTimeFormatter.ofPattern(
-                "'stat/year'/yyyy/yyyy.'all.contributions.json'",
+                "'stat/year'/yyyy/yyyy.'all.contributions.'",
                 Locale.SIMPLIFIED_CHINESE
             ),
         )
+        fun format(date: Temporal, fileType: OssFileType, suffix: String = "json"): String =
+            dtfMap[fileType]?.format(date) + suffix
     }
 
     override fun start(startFuture: Promise<Void>) {
@@ -105,10 +108,11 @@ class OssAccessorVerticle : AbstractVerticle() {
         ossClient.putObject(
             PutObjectRequest(
                 bucketName,
-                date.format(dtfMap[type]),
+                format(date, type, suffix),
                 ByteArrayInputStream(
                     when (data) {
                         is JsonObject -> data.encodePrettily().toByteArray()
+                        is String -> data.toByteArray()
                         else -> mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(data)
                     }
                 )
@@ -120,7 +124,8 @@ class OssAccessorVerticle : AbstractVerticle() {
 data class OssFilePut(
     val type: OssFileType,
     val date: ZonedDateTime,
-    val data: Any
+    val data: Any,
+    val suffix: String = "json"
 )
 
 class ShareableOss(val oss: OSS) : Shareable
