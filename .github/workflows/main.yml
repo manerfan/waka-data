@@ -78,6 +78,7 @@ jobs:
         # working-directory: '~'
         run: >
           npm install &&
+          echo $(date) > github.actions &&
           ./gradlew run --args='
           --wakaApiKey ${{ secrets.WAKA_API_KEY }}
           --ossEndpoint ${{ secrets.OSS_ENDPOINT }}
@@ -93,9 +94,9 @@ jobs:
         uses: github-actions-x/commit@v2.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          push-branch: ${{ github.ref }}
+          push-branch:  'statistics_support' # ${{ github.ref }}
           commit-message: 'Actions Generated'
           force-add: 'true'
-          files: docs/
+          files: github.actions docs/
           name: manerfan
           email: manerfan@163.com

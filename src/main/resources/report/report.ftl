@@ -90,6 +90,7 @@
         }
 
         .content > .card .light {
+            font-size: .9em;
             opacity: .6;
         }
 
@@ -253,6 +254,7 @@
                                 <span class="stress">${mostEarlyDay.time}</span>
                             </#if>
                             <#if mostLateDay??>
+                                <br/>
                                 <span class="light">一直到</span>
                                 <span class="stress">${mostLateDay.time}</span>
                             </#if>
@@ -260,7 +262,7 @@
                     <#else>
                         <#if mostHardDay??>
                             <p>
-                                <span class="stress">${mostHardDay.date}</span>
+                                <span class="weight">${mostHardDay.date}</span>
                                 <span class="light">最辛苦，共投入</span>
                                 <span class="stress">${mostHardDay.hour}</span>
                                 <span class="light">小时</span>
@@ -270,7 +272,7 @@
                         </#if>
                         <#if mostEarlyDay??>
                             <p>
-                                <span class="stress">${mostEarlyDay.date}</span>
+                                <span class="weight">${mostEarlyDay.date}</span>
                                 <span class="light">工作最早，</span>
                                 <span class="stress">${mostEarlyDay.time}</span>
                                 <span class="light">便开始工作</span>
@@ -278,8 +280,9 @@
                         </#if>
                         <#if mostLateDay??>
                             <p>
-                                <span class="stress">${mostLateDay.date}</span>
-                                <span class="light">工作最晚，一直到</span>
+                                <span class="weight">${mostLateDay.date}</span>
+                                <span class="light">工作最晚，</span>
+                                <span class="light">一直到</span>
                                 <span class="stress">${mostLateDay.time}</span>
                             </p>
                         </#if>
