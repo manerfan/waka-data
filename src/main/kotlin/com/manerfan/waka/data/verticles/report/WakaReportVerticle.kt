@@ -108,8 +108,12 @@ class WakaReportVerticle : AbstractVerticle() {
                 // 保存到系统
                 val filePath = OssAccessorVerticle.format(this.statAt, this.grading.ossFileType, "html")
                 val target = Path.of(System.getProperty("user.dir"), "docs", filePath).toFile()
+
                 target.parentFile.mkdirs()
                 target.writeText(this.content)
+
+                logger.info("~ write report file to ", target)
+
                 Single.just(Message(null))
             } else Single.just(Message(null)),
         ).chain().doFinally {
