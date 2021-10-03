@@ -87,3 +87,15 @@ jobs:
           --dingRobotWebhook ${{ secrets.DING_ROBOT_WEBHOOK }}
           --reportHomeUrl ${{ secrets.REPORT_HOME_URL }}
           '
+      # add commit & push
+      # https://github.com/marketplace/actions/github-push
+      - name: Commit files
+        run: |
+          git config --local user.email "manerfan@163.com"
+          git config --local user.name "manerfan"
+          git commit -m "Actions Generated" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
