@@ -54,7 +54,7 @@ class DingMessageVerticle : AbstractVerticle() {
                     btns = listOf(
                         OapiRobotSendRequest.Btns().apply {
                             title = "查看详情"
-                            actionURL = ""
+                            actionURL = "${reportHomeUrl}/${statData.filePath}"
                         },
                         OapiRobotSendRequest.Btns().apply {
                             title = "统计首页"

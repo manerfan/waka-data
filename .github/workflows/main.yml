@@ -94,6 +94,7 @@ jobs:
           git config --local user.email "manerfan@163.com"
           git config --local user.name "manerfan"
           git commit -m "Actions Generated" -a
+          exit 1
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:

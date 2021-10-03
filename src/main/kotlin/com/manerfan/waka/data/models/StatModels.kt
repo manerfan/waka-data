@@ -1,5 +1,7 @@
 package com.manerfan.waka.data.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.manerfan.waka.data.verticles.oss.OssFileType
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
@@ -43,7 +45,13 @@ data class StatData(
     /**
      * 统计
      */
-    val stat: Stat
+    val stat: Stat,
+
+    /**
+     * 文件路径
+     */
+    @JsonIgnore
+    val filePath: String?
 )
 
 /**

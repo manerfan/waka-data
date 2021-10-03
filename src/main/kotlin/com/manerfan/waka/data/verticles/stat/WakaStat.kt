@@ -1,7 +1,11 @@
 package com.manerfan.waka.data.verticles.stat
 
+import com.manerfan.waka.data.DEF_ZONEID
 import com.manerfan.waka.data.models.*
+import com.manerfan.waka.data.verticles.oss.OssAccessorVerticle
+import java.time.LocalDate
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 import java.time.temporal.Temporal
@@ -105,6 +109,10 @@ interface WakaStat {
                     .filter { Objects.nonNull(it) && it.duration > 0 }
                     .collect(Collectors.averagingLong(StatDurationNode::duration))
                     .toLong()
+            ),
+            OssAccessorVerticle.format(
+                LocalDate.parse(range.start, DateTimeFormatter.ISO_DATE).atStartOfDay(DEF_ZONEID),
+                grading.ossFileType, "html"
             )
         )
     }
