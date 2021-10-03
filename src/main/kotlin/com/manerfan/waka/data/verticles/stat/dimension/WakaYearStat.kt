@@ -16,7 +16,7 @@ import java.util.stream.Stream
 /**
  * 季度维度统计
  *
- * @author yongyong.fan
+ * @author maner.fan
  * @date 2021/7/28
  */
 class WakaYearStat(private val ossObject: OssObject) : WakaStat {
@@ -28,13 +28,12 @@ class WakaYearStat(private val ossObject: OssObject) : WakaStat {
         logger.info("==> Waka Data Statistics [${Grading.YEAR}]")
 
         val (bucketName, ossClient) = ossObject
-        val dtf = OssAccessorVerticle.dtfMap[OssFileType.STAT_MONTH]!!
 
         val start = date.with(firstDayOfLastYear())
         val end = start.with(TemporalAdjusters.lastDayOfYear())
         return Stream.iterate(start) { d -> d.plusMonths(1) }.limit(ChronoField.MONTH_OF_YEAR.range().maximum)
             .filter { d -> !d.isAfter(end) }
-            .map { d -> dtf.format(d) }
+            .map { d -> OssAccessorVerticle.format(d, OssFileType.STAT_MONTH) }
             .filter { fileKey -> ossClient.oss.doesObjectExist(bucketName, fileKey) }
             .parallel()
             .map { fileKey ->

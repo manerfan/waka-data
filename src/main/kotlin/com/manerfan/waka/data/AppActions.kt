@@ -5,6 +5,7 @@ package com.manerfan.waka.data
 import com.manerfan.waka.data.verticles.collect.WakaCollectVerticle
 import com.manerfan.waka.data.verticles.message.DingMessageVerticle
 import com.manerfan.waka.data.verticles.oss.OssAccessorVerticle
+import com.manerfan.waka.data.verticles.report.WakaReportVerticle
 import com.manerfan.waka.data.verticles.stat.WakaStatVerticle
 import io.vertx.core.cli.CLI
 import io.vertx.core.cli.annotations.CLIConfigurator
@@ -54,6 +55,7 @@ fun main(args: Array<String>) {
     listOf(
         vertx.rxDeployVerticle(WakaCollectVerticle()).doOnSubscribe { logger.info("==> Deploy WakaCollectVerticle") },
         vertx.rxDeployVerticle(WakaStatVerticle()).doOnSubscribe { logger.info("==> Deploy WakaStatVerticle") },
+        vertx.rxDeployVerticle(WakaReportVerticle()).doOnSubscribe { logger.info("==> Deploy WakaReportVerticle") },
         vertx.rxDeployVerticle(OssAccessorVerticle()).doOnSubscribe { logger.info("==> Deploy OssAccessorVerticle") },
         vertx.rxDeployVerticle(DingMessageVerticle()).doOnSubscribe { logger.info("==> Deploy DingTalkVerticle") }
     ).chain().subscribe { _ ->

@@ -13,7 +13,7 @@ import java.util.stream.Stream
 /**
  * 统计工具
  *
- * @author yongyong.fan
+ * @author maner.fan
  * @date 2021/7/28
  */
 

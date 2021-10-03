@@ -6,6 +6,7 @@ import com.dingtalk.api.request.OapiRobotSendRequest
 import com.manerfan.waka.data.DING_ROBOT_CONFIG_KEY
 import com.manerfan.waka.data.DING_ROBOT_WEB_HOOK
 import com.manerfan.waka.data.REPORT_HOME_URL
+import com.manerfan.waka.data.humanReadable
 import com.manerfan.waka.data.models.Grading
 import com.manerfan.waka.data.models.StatData
 import com.manerfan.waka.data.models.StatSummary
@@ -15,12 +16,11 @@ import io.vertx.reactivex.core.AbstractVerticle
 import net.steppschuh.markdowngenerator.MarkdownBuilder
 import net.steppschuh.markdowngenerator.MarkdownElement
 import net.steppschuh.markdowngenerator.text.TextBuilder
-import java.time.Duration
 
 /**
  * 钉消息通知
  *
- * @author yongyong.fan
+ * @author maner.fan
  * @date 2021/7/25
  */
 class DingMessageVerticle : AbstractVerticle() {
@@ -139,7 +139,7 @@ class DingMessageVerticle : AbstractVerticle() {
         }
     }
 
-    private fun StatData.generateTitle() = "${this.grading.desc}(${this.range.end})"
+    private fun StatData.generateTitle() = "${this.grading.type}(${this.range.end})"
 
     private fun StatData.generateHead() = when (this.grading) {
         Grading.DAILY -> "${this.range.start} 这一天"
@@ -218,14 +218,4 @@ class DingMessageVerticle : AbstractVerticle() {
                 .newParagraph()
         }
     }
-
-    private fun Duration.humanReadable() =
-        if (this.toHours() > 0) {
-            "${this.toHours()}小时" + if (this.toMinutesPart() > 0) "${this.toMinutesPart()}分钟" else ""
-        } else {
-            "${this.toMinutesPart()}分钟"
-        }
-
-    private fun Double.humanReadable() = Duration.ofMillis(this.times(1000).toLong()).humanReadable()
-    private fun Long.humanReadable() = Duration.ofMillis(this).humanReadable()
 }

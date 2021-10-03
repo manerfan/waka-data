@@ -1,0 +1,579 @@
+<!-- https://www.bootcdn.cn/ -->
+<!-- https://v5.bootcss.com/ -->
+<!-- https://echarts.apache.org/zh/index.html -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Waka Waki - 日统计 - 2021-09-10 - 2021-09-10</title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <!-- bootstrap -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        @font-face {
+            font-family: 'alibaba-puhui';
+            src: url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Bold.ttf'),
+            url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Heavy.ttf'),
+            url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Medium.ttf'),
+            url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Regular.ttf');
+        }
+
+        body {
+            font-family: "alibaba-puhui", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+
+        .desktop {
+            width: 100%;
+            height: 100vh;
+            background-image: url("https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/bg.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            min-height: 758px;
+            min-width: 360px;
+        }
+
+        .home {
+            width: 480px;
+            height: 100%;
+            padding: 5em 0;
+        }
+
+        .app {
+            width: 100%;
+            height: 100%;
+            background-color: #cbf1f5;
+            border-radius: 1em;
+            padding: 4em 1em 2em;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            border-radius: 1em;
+            overflow-y: scroll;
+        }
+
+        .content > .card {
+            position: relative;
+            color: ghostwhite;
+            width: 100%;
+            min-height: 840px;
+            max-height: 960px;
+            padding: 2.5em 2em;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            background-size: 100%;
+        }
+
+        .content > .card p {
+            margin-bottom: .5em;
+        }
+
+        .content > .card .stress {
+            font-size: 1.4em;
+        }
+
+        .content > .card .weight {
+        }
+
+        .content > .card .light {
+            opacity: .6;
+        }
+
+        .content > .card.main {
+            background-color: #195efd;
+            text-shadow: 2px 2px 5px #393e46;
+            background-image: url("https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/main/main.bg.png");
+        }
+
+        .content > .card.summary {
+            background-color: #25c24d;
+            background-image: url("https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/summary/summary.bg.png");
+        }
+
+        .content > .card.range {
+            background-color: #1e62fe;
+            background-image: url("https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/range/range.bg.png");
+            height: 1260px;
+            max-height: 1360px;
+        }
+
+        .content > .card.hard {
+            background-color: #082786;
+            background-image: url("https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/hard/hard.bg.png");
+            height: 960px;
+            max-height: 1060px;
+        }
+
+        .content .chart {
+            width: 100vm;
+        }
+
+        /* 小屏样式 */
+        @media only screen and (max-width: 500px) {
+            .desktop {
+                height: 100%;
+            }
+
+            .home {
+                width: 100%;
+                height: 100%;
+                padding: 0;
+            }
+
+            .app {
+                width: 100%;
+                height: 100%;
+                background-color: transparent;
+                border-radius: 0;
+                padding: 0;
+            }
+
+            .content {
+                border-radius: 0;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+        }
+    </style>
+</head>
+<body>
+<div class="desktop">
+    <div class="home">
+        <div class="app">
+            <div class="content">
+                <div class="card main">
+                    <img src="https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/manerfan.com-logo.png"
+                         class="rounded float-start" style="width: 60%; margin-bottom: 3em;" alt="manerfan.com"/>
+                    <h1 style="font-weight: bold; text-align:center;">技术人编码统计</h1>
+                    <h4 style="text-align: center; margin-top: 0.5em;">Waka Waki 『日统计』</h4>
+                    <h6 style="text-align: center; margin-top: 1.5em;">
+                            2021-09-10
+                    </h6>
+                </div>
+                <div class="card summary">
+                    <p>
+                            <span class="light">这一天，共投入</span><br/>
+                    </p>
+                    <p>
+                        <span class="stress">6</span>
+                        <span class="weight">小时</span>
+                        <span class="stress">8</span>
+                        <span class="weight">分钟</span>
+                    </p>
+                    <p>
+                            <span class="light">跨度从</span>
+                            <span class="stress">09:05</span>
+                            <span class="light">一直到</span>
+                            <span class="stress">15:55</span>
+                    </p>
+                        <p>
+                            <span class="light">最喜欢在</span><br/>
+                        </p>
+                        <p>
+                            <span class="stress">09:25</span>
+                            <span class="light">到</span>
+                            <span class="stress">10:25</span>
+                            <span class="light">之间搬砖</span>
+                        </p>
+                    <div id="summary" class="chart"
+                         style="width: 110%;height: 240px; position: relative; top: -20px; left: -20px;"></div>
+                </div>
+                <div class="card range">
+                    <p>
+                        <span class="light">这一天，投入</span>
+                    </p>
+                    <p style="margin-top: .5em;">
+                        <span class="light">语言占比</span>
+                    </p>
+                    <div id="language" class="chart"
+                         style="width: 100%; height: 120px; position: relative; margin-top: 10px;"></div>
+                    <p style="margin-top: 1.5em;">
+                        <span class="light">工具占比</span>
+                    </p>
+                    <div id="editor" class="chart"
+                         style="width: 100%; height: 120px; position: relative; margin-top: 10px;"></div>
+                    <p style="margin-top: 1.5em;">
+                        <span class="light">项目占比</span>
+                    </p>
+                    <div id="project" class="chart"
+                         style="width: 100%; height: 120px; position: relative; margin-top: 10px;"></div>
+                    <p style="margin-top: 1.5em;">
+                        <span class="light">动作占比</span>
+                    </p>
+                    <div id="action" class="chart"
+                         style="width: 100%; height: 120px; position: relative; margin-top: 10px;"></div>
+                </div>
+                <div class="card hard">
+                    <p>
+                        <span class="light">这一天</span><br/>
+                    </p>
+                            <p>
+                                <span class="light">共投入</span>
+                                <span class="stress">6</span>
+                                <span class="light">小时</span>
+                                <span class="stress">8</span>
+                                <span class="light">分钟</span>
+                            </p>
+                        <p>
+                                <span class="light">从</span>
+                                <span class="stress">09:05</span>
+                                <span class="light">一直到</span>
+                                <span class="stress">15:55</span>
+                        </p>
+                    <p style="margin-top: 1em;">
+                        <span class="light">截止到今天，每一天都在努力着</span><br/>
+                    </p>
+                    <div id="hard" class="chart"
+                         style="height: 120px; position: relative; top: -20px;"></div>
+                </div>
+                <!-- <div class="card category"></div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- bootstrap -->
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+<!-- echarts -->
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.min.js"></script>
+
+<script type="text/javascript">
+    const summaryDom = document.getElementById('summary');
+    const summaryChart = echarts.init(summaryDom);
+
+    const summaryOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        xAxis: {
+            data: ["00:00","00:05","00:10","00:15","00:20","00:25","00:30","00:35","00:40","00:45","00:50","00:55","01:00","01:05","01:10","01:15","01:20","01:25","01:30","01:35","01:40","01:45","01:50","01:55","02:00","02:05","02:10","02:15","02:20","02:25","02:30","02:35","02:40","02:45","02:50","02:55","03:00","03:05","03:10","03:15","03:20","03:25","03:30","03:35","03:40","03:45","03:50","03:55","04:00","04:05","04:10","04:15","04:20","04:25","04:30","04:35","04:40","04:45","04:50","04:55","05:00","05:05","05:10","05:15","05:20","05:25","05:30","05:35","05:40","05:45","05:50","05:55","06:00","06:05","06:10","06:15","06:20","06:25","06:30","06:35","06:40","06:45","06:50","06:55","07:00","07:05","07:10","07:15","07:20","07:25","07:30","07:35","07:40","07:45","07:50","07:55","08:00","08:05","08:10","08:15","08:20","08:25","08:30","08:35","08:40","08:45","08:50","08:55","09:00","09:05","09:10","09:15","09:20","09:25","09:30","09:35","09:40","09:45","09:50","09:55","10:00","10:05","10:10","10:15","10:20","10:25","10:30","10:35","10:40","10:45","10:50","10:55","11:00","11:05","11:10","11:15","11:20","11:25","11:30","11:35","11:40","11:45","11:50","11:55","12:00","12:05","12:10","12:15","12:20","12:25","12:30","12:35","12:40","12:45","12:50","12:55","13:00","13:05","13:10","13:15","13:20","13:25","13:30","13:35","13:40","13:45","13:50","13:55","14:00","14:05","14:10","14:15","14:20","14:25","14:30","14:35","14:40","14:45","14:50","14:55","15:00","15:05","15:10","15:15","15:20","15:25","15:30","15:35","15:40","15:45","15:50","15:55","16:00","16:05","16:10","16:15","16:20","16:25","16:30","16:35","16:40","16:45","16:50","16:55","17:00","17:05","17:10","17:15","17:20","17:25","17:30","17:35","17:40","17:45","17:50","17:55","18:00","18:05","18:10","18:15","18:20","18:25","18:30","18:35","18:40","18:45","18:50","18:55","19:00","19:05","19:10","19:15","19:20","19:25","19:30","19:35","19:40","19:45","19:50","19:55","20:00","20:05","20:10","20:15","20:20","20:25","20:30","20:35","20:40","20:45","20:50","20:55","21:00","21:05","21:10","21:15","21:20","21:25","21:30","21:35","21:40","21:45","21:50","21:55","22:00","22:05","22:10","22:15","22:20","22:25","22:30","22:35","22:40","22:45","22:50","22:55","23:00","23:05","23:10","23:15","23:20","23:25","23:30","23:35","23:40","23:45","23:50","23:55","00:00"],
+            min: 0,
+            max: 289,
+            axisLabel: {
+                color: '#fff'
+            },
+            axisTick: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            }
+        },
+        yAxis: {
+            min: 0,
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: false
+            }
+        },
+        series: [
+            {
+                type: 'line',
+                smooth: true,
+                showSymbol: false,
+                lineStyle: {
+                    width: 0
+                },
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {offset: 0, color: '#e03e36'},
+                        {offset: 0.5, color: '#ff7c38'},
+                        {offset: 1, color: '#fecea8'}
+                    ])
+                },
+                data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,196000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300785,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,136215,0,0,0,0,0,0,0,143000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300004,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,35568,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            }
+        ]
+    };
+
+    summaryChart.setOption(summaryOption);
+</script>
+
+<script type="text/javascript">
+    const languageDom = document.getElementById('language');
+    const languageChart = echarts.init(languageDom);
+    const languageOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        legend: {
+            type: 'scroll',
+            pageIconSize: 8,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        series: [
+            {
+                name: 'Radius Mode',
+                type: 'pie',
+                radius: [0, 60],
+                center: ['20%', '50%'],
+                //roseType: 'radius',
+                itemStyle: {
+                    normal: {
+                        borderRadius: 5,
+                        color: function (params) {
+                            const colorList = ["#91cc75", "#f9c958", "#ee6666", "#73c0de", "#3aa272", "#fc8453", "#9a60b4"];
+                            return colorList[params.dataIndex % 7];
+                        }
+                    }
+                },
+                label: {
+                    show: false
+                },
+                emphasis: {
+                    label: {
+                        show: true
+                    }
+                },
+                data: [{"name":"Other (89.5%)","value":19799879},{"name":"Java (7.9%)","value":1744977},{"name":"Properties (0.9%)","value":198426},{"name":"sh (0.9%)","value":197662},{"name":"XML (0.8%)","value":170625}]
+            }
+        ]
+    };
+
+    languageChart.setOption(languageOption);
+</script>
+
+<script type="text/javascript">
+    const editorDom = document.getElementById('editor');
+    const editorChart = echarts.init(editorDom);
+    const editorOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        legend: {
+            type: 'scroll',
+            pageIconSize: 8,
+            orient: 'vertical',
+            left: 'left',
+            top: 'center',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        series: [
+            {
+                name: 'Radius Mode',
+                type: 'pie',
+                radius: [0, 60],
+                center: ['80%', '50%'],
+                //roseType: 'radius',
+                itemStyle: {
+                    normal: {
+                        borderRadius: 5,
+                        color: function (params) {
+                            const colorList = ["#91cc75", "#f9c958", "#ee6666", "#73c0de", "#3aa272", "#fc8453", "#9a60b4"];
+                            return colorList[params.dataIndex % 7];
+                        }
+                    }
+                },
+                label: {
+                    show: false
+                },
+                emphasis: {
+                    label: {
+                        show: true
+                    }
+                },
+                data: [{"name":"Browser (89.5%)","value":19799879},{"name":"IntelliJ (9.6%)","value":2114029},{"name":"Zsh (0.9%)","value":197662}]
+            }
+        ]
+    };
+
+    editorChart.setOption(editorOption);
+</script>
+
+
+<script type="text/javascript">
+    const projectDom = document.getElementById('project');
+    const projectChart = echarts.init(projectDom);
+    const projectOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        legend: {
+            type: 'scroll',
+            pageIconSize: 8,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        series: [
+            {
+                name: 'Radius Mode',
+                type: 'pie',
+                radius: [0, 60],
+                center: ['20%', '50%'],
+                //roseType: 'radius',
+                itemStyle: {
+                    normal: {
+                        borderRadius: 5,
+                        color: function (params) {
+                            const colorList = ["#91cc75", "#f9c958", "#ee6666", "#73c0de", "#3aa272", "#fc8453", "#9a60b4"];
+                            return colorList[params.dataIndex % 7];
+                        }
+                    }
+                },
+                label: {
+                    show: false
+                },
+                emphasis: {
+                    label: {
+                        show: true
+                    }
+                },
+                data: [{"name":"9fa0f85 (99.8%)","value":22073862},{"name":"4ab2f5f (0.2%)","value":37710}]
+            }
+        ]
+    };
+
+    projectChart.setOption(projectOption);
+</script>
+
+
+<script type="text/javascript">
+    const actionDom = document.getElementById('action');
+    const actionChart = echarts.init(actionDom);
+    const actionOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        legend: {
+            type: 'scroll',
+            pageIconSize: 8,
+            orient: 'vertical',
+            left: 'left',
+            top: 'center',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        series: [
+            {
+                name: 'Radius Mode',
+                type: 'pie',
+                radius: [0, 60],
+                center: ['80%', '50%'],
+                //roseType: 'radius',
+                itemStyle: {
+                    normal: {
+                        borderRadius: 5,
+                        color: function (params) {
+                            const colorList = ["#91cc75", "#f9c958", "#ee6666", "#73c0de", "#3aa272", "#fc8453", "#9a60b4"];
+                            return colorList[params.dataIndex % 7];
+                        }
+                    }
+                },
+                label: {
+                    show: false
+                },
+                emphasis: {
+                    label: {
+                        show: true
+                    }
+                },
+                data: [{"name":"Browsing (85.1%)","value":18822913},{"name":"Coding (10.5%)","value":2311692},{"name":"Debugging (4.4%)","value":976966}]
+            }
+        ]
+    };
+
+    actionChart.setOption(actionOption);
+</script>
+
+<script type="text/javascript">
+    const hardDom = document.getElementById('hard');
+    const hardChart = echarts.init(hardDom);
+    const hardOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        visualMap: {
+            min: 0,
+            max: 48149169,
+            type: 'continuous',
+            show: false,
+            inRange: {
+                color: ['#fcfefe', '#005792'],
+                opacity: 1
+            }
+        },
+        calendar: {
+            left: 0,
+            right: 0,
+            cellSize: ['auto', 'auto'],
+            range: '2021',
+            itemStyle: {
+                borderWidth: 0.5
+            },
+            dayLabel: {
+                firstDay: 1,
+                show: false
+            },
+            monthLabel: {
+                nameMap: 'cn',
+                margin: 5,
+                fontSize: 8,
+                color: '#fff'
+            },
+            yearLabel: {show: false}
+        },
+        series: {
+            type: 'heatmap',
+            coordinateSystem: 'calendar',
+            data: [["2021-03-21",1060128],["2021-03-22",2071039],["2021-03-23",2688975],["2021-03-24",3016917],["2021-03-25",12771485],["2021-03-26",1356391],["2021-03-27",0],["2021-03-28",375362],["2021-03-29",13978283],["2021-03-30",24830784],["2021-03-31",8762216],["2021-04-01",279341],["2021-04-02",19976344],["2021-04-03",0],["2021-04-06",40976],["2021-04-07",8788863],["2021-04-08",10638342],["2021-04-09",560989],["2021-04-12",179268],["2021-05-10",7621983],["2021-05-11",22833353],["2021-05-12",27384481],["2021-05-13",23543519],["2021-05-14",22413914],["2021-05-15",9656004],["2021-05-17",6006393],["2021-05-18",19855434],["2021-05-19",5936544],["2021-05-21",6817823],["2021-05-22",1895699],["2021-05-23",16408578],["2021-05-24",10457656],["2021-06-08",22970628],["2021-06-09",12157983],["2021-06-10",31679179],["2021-06-11",11682487],["2021-06-14",12824],["2021-06-15",3413974],["2021-06-16",19337060],["2021-06-17",8864322],["2021-06-18",6613747],["2021-06-19",135395],["2021-06-20",17692575],["2021-06-21",6432976],["2021-06-22",14879306],["2021-06-23",12579267],["2021-06-24",18928190],["2021-06-25",10384415],["2021-06-26",10193586],["2021-06-27",8585430],["2021-06-28",24448991],["2021-06-29",27250836],["2021-06-30",22533284],["2021-07-01",13124722],["2021-07-02",10232936],["2021-07-03",1389579],["2021-07-05",26400261],["2021-07-06",31108743],["2021-07-07",26502414],["2021-07-08",20653887],["2021-07-09",12737510],["2021-07-12",11578552],["2021-07-13",5302726],["2021-07-14",30590339],["2021-07-15",31094815],["2021-07-16",30832739],["2021-07-18",23504750],["2021-07-19",42946210],["2021-07-20",43805574],["2021-07-21",36381414],["2021-07-22",27603449],["2021-07-23",32357669],["2021-07-24",14245961],["2021-07-25",31103146],["2021-07-26",2844352],["2021-07-27",13577221],["2021-07-28",18264636],["2021-07-29",38717439],["2021-07-30",22469000],["2021-07-31",3620000],["2021-08-02",20315734],["2021-08-03",37114179],["2021-08-04",23390000],["2021-08-05",30890000],["2021-08-06",34844000],["2021-08-07",0],["2021-08-09",31279396],["2021-08-10",36981170],["2021-08-11",34315619],["2021-08-12",36700000],["2021-08-13",33097000],["2021-08-15",18434984],["2021-08-16",43456516],["2021-08-17",36971050],["2021-08-18",43123602],["2021-08-19",37856466],["2021-08-20",29192839],["2021-08-21",6431802],["2021-08-22",31530082],["2021-08-23",48149169],["2021-08-24",38337949],["2021-08-25",40041888],["2021-08-26",44078710],["2021-08-27",27040973],["2021-08-28",3421424],["2021-08-29",13190831],["2021-08-30",39363174],["2021-08-31",36595055],["2021-09-01",38207947],["2021-09-02",34574375],["2021-09-03",23922182],["2021-09-04",2344739],["2021-09-05",0],["2021-09-06",36461000],["2021-09-07",22758000],["2021-09-08",28687562],["2021-09-09",26968546],["2021-09-10",22111572],["2021-09-11",3816261],["2021-09-12",21631525],["2021-09-14",11965512],["2021-09-15",5188477],["2021-09-16",3462648],["2021-09-19",82867],["2021-09-21",12530712],["2021-09-23",11460601],["2021-09-24",28982823],["2021-09-26",37645000],["2021-09-27",36614000],["2021-09-28",36206967],["2021-09-29",39611797],["2021-09-30",29420000],["2021-10-02",18311000]]
+        }
+    };
+
+    hardChart.setOption(hardOption);
+</script>
+</body>
+</html>

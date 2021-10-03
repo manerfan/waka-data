@@ -63,7 +63,7 @@ jobs:
           path: |
             ~/.npm
             ~/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json', '**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
       # 运行代码

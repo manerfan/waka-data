@@ -10,7 +10,7 @@ import java.util.*
 /**
  * waka statistics
  *
- * @author yongyong.fan
+ * @author maner.fan
  * @date 2021/7/18
  */
 
@@ -230,12 +230,12 @@ data class FavoritePeriod(
     val totalDuration: Long
 )
 
-enum class Grading(val desc: String, val ossFileType: OssFileType, val message: Boolean) {
-    DAILY("日统计", OssFileType.STAT_DAILY, true),
-    WEEK("周统计", OssFileType.STAT_WEEK, true),
-    MONTH("月度统计", OssFileType.STAT_MONTH, true),
-    QUARTER("季度统计", OssFileType.STAT_QUARTER, true),
-    HALF_YEAR("半年统计", OssFileType.STAT_HALF_YEAR, true),
-    YEAR("全年统计", OssFileType.STAT_YEAR, true),
-    ALL("年全量统计", OssFileType.STAT_ALL_CONTRIBUTIONS, false)
+enum class Grading(val type: String, val desc: String, val ossFileType: OssFileType, val message: Boolean) {
+    DAILY("日统计", "这一天", OssFileType.STAT_DAILY, true),
+    WEEK("周统计", "这一周", OssFileType.STAT_WEEK, true),
+    MONTH("月度统计", "这一月", OssFileType.STAT_MONTH, true),
+    QUARTER("季度统计", "这季度", OssFileType.STAT_QUARTER, true),
+    HALF_YEAR("半年统计", "这半年", OssFileType.STAT_HALF_YEAR, true),
+    YEAR("全年统计", "这一年", OssFileType.STAT_YEAR, true),
+    ALL("年全量统计", "这全年", OssFileType.STAT_ALL_CONTRIBUTIONS, false)
 }

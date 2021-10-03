@@ -9,7 +9,7 @@ import io.vertx.core.eventbus.MessageCodec
 /**
  * ObjectCodec
  *
- * @author yongyong.fan
+ * @author maner.fan
  * @date 2021/7/18
  */
 class ObjectTypeCodec<T> : MessageCodec<T, T> {

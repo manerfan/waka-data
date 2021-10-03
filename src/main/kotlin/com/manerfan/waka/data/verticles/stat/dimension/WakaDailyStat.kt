@@ -13,14 +13,14 @@ import java.util.stream.Collectors
 /**
  * 日维度统计
  *
- * @author yongyong.fan
+ * @author maner.fan
  * @date 2021/7/28
  */
 class WakaDailyStat(private val ossObject: OssObject) : WakaStat {
     override fun stat(date: ZonedDateTime): StatData? {
         val (bucketName, ossClient) = ossObject
 
-        val fileKey = OssAccessorVerticle.dtfMap[OssFileType.META]!!.format(date)
+        val fileKey = OssAccessorVerticle.format(date, OssFileType.META)
         if (!ossClient.oss.doesObjectExist(bucketName, fileKey)) {
             return null
         }
