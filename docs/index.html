@@ -1,0 +1,168 @@
+<!-- https://www.bootcdn.cn/ -->
+<!-- https://v5.bootcss.com/ -->
+<!-- https://echarts.apache.org/zh/index.html -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Waka Waki</title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <!-- bootstrap -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        @font-face {
+            font-family: 'alibaba-puhui';
+            src: url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Bold.ttf'),
+            url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Heavy.ttf'),
+            url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Medium.ttf'),
+            url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Regular.ttf');
+        }
+
+        body {
+            font-family: "alibaba-puhui", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+
+        .desktop {
+            width: 100%;
+            height: 100vh;
+            background-image: url("https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/bg.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            min-height: 758px;
+            min-width: 360px;
+        }
+
+        .home > div {
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .left, .right {
+            display: inline-block;
+            float: left;
+        }
+
+        .right {
+            margin-left: 4em;
+        }
+
+        .manerfan {
+            width: 320px;
+        }
+
+        .logo {
+            width: 200px;
+        }
+
+        .desc {
+            line-height: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        .btn {
+            margin: .5em;
+        }
+
+        .github-corner:hover .octo-arm {
+            animation: octocat-wave 560ms ease-in-out
+        }
+
+        @keyframes octocat-wave {
+            0%, 100% {
+                transform: rotate(0)
+            }
+            20%, 60% {
+                transform: rotate(-25deg)
+            }
+            40%, 80% {
+                transform: rotate(10deg)
+            }
+        }
+
+        /* 小屏样式 */
+        @media only screen and (max-width: 500px) {
+            .github-corner:hover .octo-arm {
+                animation: none
+            }
+
+            .github-corner .octo-arm {
+                animation: octocat-wave 560ms ease-in-out
+            }
+
+            .left, .right {
+                display: block;
+                float: none;
+                margin: auto;
+            }
+
+            .logo {
+                margin-bottom: 4em;
+            }
+
+            .desc {
+                text-align: center;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<a href="https://github.com/manerfan/waka-data" target="_blank"
+   style="position: absolute; top: 0; right: 0; z-index: 999;" class="github-corner" aria-label="View source on GitHub">
+    <svg width="80" height="80" viewBox="0 0 250 250"
+         style="fill:#fff; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+<div class="desktop">
+    <div class="home">
+        <div style="color: #ecfffb;">
+            <h1 style="font-size: 3.5em; text-align: center;">Waka Waki</h1>
+        </div>
+        <div style="margin-bottom: 4em;">
+            <img src="https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/manerfan.com-logo.png"
+                 class="manerfan rounded float-start" alt="manerfan.com"/>
+        </div>
+        <div style="color: #ecfffb; margin-bottom: 1em;">
+            <div class="left">
+                <img class="logo"
+                     src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB3aWR0aD0iMzQwIiBoZWlnaHQ9IjM0MCIgdmlld0JveD0iMCAwIDM0MCAzNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNzAgMjBDODcuMTU2IDIwIDIwIDg3LjE1NiAyMCAxNzBDMjAgMjUyLjg0NCA4Ny4xNTYgMzIwIDE3MCAzMjBDMjUyLjg0NCAzMjAgMzIwIDI1Mi44NDQgMzIwIDE3MEMzMjAgODcuMTU2IDI1Mi44NDQgMjAgMTcwIDIwVjIwVjIwWiIgc3Ryb2tlLXdpZHRoPSI0MCIgc3R5bGU9InN0cm9rZTogcmdiKDIzNiwgMjU1LCAyNTEpOyIvPgogIDxwYXRoIGQ9Ik0gMTkwLjE4MyAyMTMuNTQxIEMgMTg4Ljc0IDIxNS40NDMgMTg2LjU3NiAyMTYuNjY3IDE4NC4xNTEgMjE2LjY2NyBDIDE4My45MTMgMjE2LjY2NyAxODMuNjc3IDIxNi42NTEgMTgzLjQ0MyAyMTYuNjI3IEMgMTgzLjA0MiAyMTYuNTc5IDE4Mi44MjMgMjE2LjU0NSAxODIuNjA2IDIxNi40OTcgQyAxODIuMzM3IDIxNi40MzQgMTgyLjEzNyAyMTYuMzc1IDE4MS45NCAyMTYuMzA4IEMgMTgxLjU2MSAyMTYuMTc2IDE4MS4zOTIgMjE2LjEwOSAxODEuMjI4IDIxNi4wMzUgQyAxODAuODQzIDIxNS44NDkgMTgwLjcwNyAyMTUuNzc4IDE4MC41NzIgMjE1LjcwMSBDIDE4MC4yMDUgMjE1LjQ3OCAxODAuMTA5IDIxNS40MTIgMTgwLjAxNCAyMTUuMzQ1IEMgMTc5Ljg1NiAyMTUuMjMzIDE3OS42OTggMjE1LjExNyAxNzkuNTQ3IDIxNC45OTIgQyAxNzkuMjUxIDIxNC43NDYgMTc5LjE0NyAyMTQuNjUgMTc5LjA0NCAyMTQuNTUyIEMgMTc4LjczMSAyMTQuMjQxIDE3OC41MzEgMjE0LjAxOCAxNzguMzQxIDIxMy43ODUgQyAxNzcuOTgyIDIxMy4zMzEgMTc3LjY5IDIxMi44ODggMTc3LjQzOCAyMTIuNDE1IEwgMTY4LjYgMTk4LjIxNCBMIDE1OS43NjYgMjEyLjQxNSBDIDE1OC4zOCAyMTQuOTM5IDE1NS44NzQgMjE2LjY2NyAxNTIuOTk1IDIxNi42NjcgQyAxNTAuMTA2IDIxNi42NjcgMTQ3LjU4OCAyMTQuOTI2IDE0Ni4yNDMgMjEyLjM0NiBMIDEwNy42MDcgMTU2LjA2MSBDIDEwNi4zMzcgMTU0LjUyOSAxMDUuNTU2IDE1Mi40OTkgMTA1LjU1NiAxNTAuMjU4IEMgMTA1LjU1NiAxNDUuNTE0IDEwOS4wNDMgMTQxLjY2NSAxMTMuMzQ0IDE0MS42NjUgQyAxMTYuMTI3IDE0MS42NjUgMTE4LjU2NCAxNDMuMjgyIDExOS45NDIgMTQ1LjcwOCBMIDE1Mi41NTUgMTkzLjkgTCAxNjEuNzM1IDE3OC45NTIgQyAxNjMuMDU4IDE3Ni4yODggMTY1LjYyNiAxNzQuNDc4IDE2OC41NzUgMTc0LjQ3OCBDIDE3MS4yNzMgMTc0LjQ3OCAxNzMuNjUyIDE3NS45OTYgMTc1LjA0OSAxNzguMjk4IEwgMTg0LjUxNyAxOTMuODM5IEwgMjM1LjY4NCAxMjAuNTgzIEMgMjM3LjA3NSAxMTguMjI2IDIzOS40NzUgMTE2LjY2NyAyNDIuMjEzIDExNi42NjcgQyAyNDYuNTE0IDExNi42NjcgMjUwIDEyMC41MTQgMjUwIDEyNS4yNTggQyAyNTAgMTI3LjMzMiAyNDkuMzM3IDEyOS4yMzIgMjQ4LjIzIDEzMC43MTUgTCAyNDEuODgxIDEzOS43NzQgTCAxOTAuMTgzIDIxMy41NDEgWiIgZmlsbD0iYmxhY2siIHN0eWxlPSJzdHJva2U6IHJnYigyMzYsIDI1NSwgMjUxKTsgc3Ryb2tlLXdpZHRoOiAxMHB4OyIvPgo8L3N2Zz4=">
+            </div>
+            <div class="right">
+                <h1 class="desc">
+                    基于 <a href="https://wakatime.com/" target="_blank" style="color: inherit;">WakaTime</a>
+                    <br/>
+                    数据统计再展示
+                </h1>
+                <a href="https://github.com/manerfan/waka-data" type="button" class="btn btn-outline-light">GitHub</a>
+                <a href="https://www.yuque.com/mblog/back.yard/qxl6xu" target="_blank" type="button"
+                   class="btn btn-outline-light">文档</a>
+                <a href="https://manerfan.github.io/waka-data/stat/year/2021/2021.07.Q3.quarter" target="_blank"
+                   type="button" class="btn btn-outline-light">示例</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- bootstrap -->
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
