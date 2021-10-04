@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           # 指定分支
-          ref: 'statistics_support'
+          ref: 'main'
       # 设置 jdk
       # https://github.com/marketplace/actions/setup-java-jdk
       # https://github.com/actions/setup-java
@@ -94,7 +94,7 @@ jobs:
         uses: github-actions-x/commit@v2.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          push-branch:  'statistics_support' # ${{ github.ref }}
+          push-branch:  'main' # ${{ github.ref }}
           commit-message: 'Actions Generated'
           force-add: 'true'
           files: github.actions docs/
