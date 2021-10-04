@@ -95,7 +95,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           push-branch:  'main' # ${{ github.ref }}
-          commit-message: 'Actions Generated'
+          commit-message: 'GitHub Actions Auto Generated'
           force-add: 'true'
           files: github.actions docs/
           name: manerfan
