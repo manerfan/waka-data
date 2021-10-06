@@ -11,30 +11,72 @@
 
 [![Apache License 2.0](https://img.shields.io/github/license/manerfan/waka-data)](https://github.com/manerfan/waka-data/blob/main/LICENSE)
 
-This application was generated using http://start.vertx.io
+## 文档
 
-## Building
+https://manerfan.github.io/waka-data/
 
-To launch your tests:
-```
-./gradlew clean test
+## 背景
+
+几年前发现 [WakaTime](https://wakatime.com/) ，可以非常精准的记录日常搬砖情况
+
+> [WakaTime](https://wakatime.com/)  
+> Dashboards for developers  
+> Open source plugins for metrics about your programming
+>
+> 支持的 IDE [https://wakatime.com/plugins](https://wakatime.com/plugins)  
+> 需要的 API KEY [https://wakatime.com/settings/account](https://wakatime.com/settings/account)  
+> 开发文档 [https://wakatime.com/developers](https://wakatime.com/developers)  
+
+但对个人（非付费）用户来说，数据最长仅能保留一周，直到前段时间突然有了自己做的想法，于是，Waka Waki 诞生了
+
+![WakaWaki](docs/WakaWaki.jpg)
+
+## 能做什么
+
+- 能够拉取 WakaTime 的数据
+- 能够在 天、周、月、季度、年 不同时间维度上做简单的数据统计
+- 能够每天定时运行并生成文字版、图文版（HTML）报告
+- 能够通过多种途径进行推送，并适配不同的设备
+
+## 如何使用
+
+### fork 项目
+
+[https://github.com/manerfan/waka-data/fork](https://github.com/manerfan/waka-data/fork)
+
+### 配置Secrets
+
+配置 Secrets 是为了提供运行过程中需要的一些敏感参数
+
+> 了解 GitHub Secrets [https://docs.github.com/en/actions/security-guides/encrypted-secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
+
+|类型|参数|说明|
+| ------------ | ------------------ | ------------------------------------------------------------ |
+| WakaTime     | wakaApiKey         | WakaTime 账号 ApiKey，用于拉取 WakaTime 数据使用<br />[https://wakatime.com/settings/account](https://wakatime.com/settings/account) |
+| Aliyun OSS   | ossEndpoint        | 阿里云 OSS Endpoint<br />bucket概览中查看                    |
+|              | ossBucketName      | 阿里云 Oss Bucket                                            |
+|              | ossAccessKeyId     | 阿里云账号 AccessKeyId                                       |
+|              | ossAccessKeySecret | 阿里云账号 AccessKeySecret                                   |
+| 钉钉         | dingRobotWebhook   | 钉钉群机器人 WebHook                                         |
+| GitHub Pages | reportHomeUrl      | GitHub Pages 发布地址，用于拼接报告页面地址                  |
+
+## 如何调试
+
+### clone 项目
+
+```shell
+git clone https://github.com/manerfan/waka-data.git
 ```
 
-To package your application:
-```
-./gradlew clean assemble
+### 配置 Secrets
+
+修改 `gradle.properties`<br />参考 [如何使用-配置 Secrets]
+
+### 运行程序
+
+```shell
+./gradlew run
 ```
 
-To run your application:
-```
-./gradlew clean run
-```
-
-## Help
-
-* https://vertx.io/docs/[Vert.x Documentation]
-* https://stackoverflow.com/questions/tagged/vert.x?sort=newest&pageSize=15[Vert.x Stack Overflow]
-* https://groups.google.com/forum/?fromgroups#!forum/vertx[Vert.x User Group]
-* https://gitter.im/eclipse-vertx/vertx-users[Vert.x Gitter]
 
 
