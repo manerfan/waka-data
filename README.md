@@ -52,13 +52,13 @@ https://manerfan.github.io/waka-data/
 
 |类型|参数|说明|
 | ------------ | ------------------ | ------------------------------------------------------------ |
-| WakaTime     | wakaApiKey         | WakaTime 账号 ApiKey，用于拉取 WakaTime 数据使用<br />[https://wakatime.com/settings/account](https://wakatime.com/settings/account) |
-| Aliyun OSS   | ossEndpoint        | 阿里云 OSS Endpoint<br />bucket概览中查看                    |
-|              | ossBucketName      | 阿里云 Oss Bucket                                            |
-|              | ossAccessKeyId     | 阿里云账号 AccessKeyId                                       |
-|              | ossAccessKeySecret | 阿里云账号 AccessKeySecret                                   |
-| 钉钉         | dingRobotWebhook   | 钉钉群机器人 WebHook                                         |
-| GitHub Pages | reportHomeUrl      | GitHub Pages 发布地址，用于拼接报告页面地址                  |
+| WakaTime     | WAKA_API_KEY         | WakaTime 账号 ApiKey，用于拉取 WakaTime 数据使用<br />[https://wakatime.com/settings/account](https://wakatime.com/settings/account) |
+| Aliyun OSS   | OSS_ENDPOINT        | 阿里云 OSS Endpoint<br />bucket概览中查看                    |
+| Aliyun OSS   | OSS_BUCKET_NAME      | 阿里云 Oss Bucket                                            |
+| Aliyun OSS   | OSS_ACCESS_KEY_ID     | 阿里云账号 AccessKeyId                                       |
+| Aliyun OSS   | OSS_ACCESS_KEY_SECRET | 阿里云账号 AccessKeySecret                                   |
+| 钉钉         | DING_ROBOT_WEBHOOK   | 钉钉群机器人 WebHook                                         |
+| GitHub Pages | REPORT_HOME_URL      | GitHub Pages 发布地址，用于拼接报告页面地址                  |
 
 ## 如何调试
 
