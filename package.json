@@ -1,6 +1,6 @@
 {
   "name": "waka-data",
-  "version": "1.0.0-SNAPSHOT",
+  "version": "1.0.0",
   "description": "wakatime data synchronization and analysis",
   "dependencies": {
     "puppeteer": "^10.4.0"
