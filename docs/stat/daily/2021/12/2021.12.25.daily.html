@@ -1,0 +1,644 @@
+<!-- https://www.bootcdn.cn/ -->
+<!-- https://v5.bootcss.com/ -->
+<!-- https://echarts.apache.org/zh/index.html -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Waka Waki - 日统计 - 2021-12-25 - 2021-12-25</title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <!-- bootstrap -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        @font-face {
+            font-family: 'alibaba-puhui';
+            src: url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Bold.ttf'),
+            url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Heavy.ttf'),
+            url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Medium.ttf'),
+            url('https://wakadata.oss-cn-beijing.aliyuncs.com/assets/fonts/alibaba-sans/Alibaba-PuHuiTi-Regular.ttf');
+        }
+
+        body {
+            font-family: "alibaba-puhui", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+
+        .desktop {
+            width: 100%;
+            height: 100vh;
+            background-image: url("https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/bg.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            min-height: 758px;
+            min-width: 360px;
+        }
+
+        .home {
+            width: 480px;
+            height: 100%;
+            padding: 5em 0;
+        }
+
+        .app {
+            width: 100%;
+            height: 100%;
+            background-color: #cbf1f5;
+            border-radius: 1em;
+            padding: 4em 1em 2em;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            border-radius: 1em;
+            overflow-y: scroll;
+        }
+
+        .content > .card {
+            position: relative;
+            color: ghostwhite;
+            width: 100%;
+            min-height: 840px;
+            max-height: 960px;
+            padding: 2.5em 2em;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            background-size: 100%;
+        }
+
+        .content > .card p {
+            margin-bottom: .5em;
+        }
+
+        .content > .card .stress {
+            font-size: 1.4em;
+        }
+
+        .content > .card .weight {
+        }
+
+        .content > .card .light {
+            font-size: .9em;
+            opacity: .6;
+        }
+
+        .content > .card.main {
+            background-color: #195efd;
+            text-shadow: 2px 2px 5px #393e46;
+            background-image: url("https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/main/main.bg.png");
+        }
+
+        .content > .card.summary {
+            background-color: #25c24d;
+            background-image: url("https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/summary/summary.bg.png");
+        }
+
+        .content > .card.range {
+            background-color: #1e62fe;
+            background-image: url("https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/range/range.bg.png");
+            height: 1260px;
+            max-height: 1360px;
+        }
+
+        .content > .card.hard {
+            background-color: #082786;
+            background-image: url("https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/hard/hard.bg.png");
+            height: 960px;
+            max-height: 1060px;
+        }
+
+        .content .chart {
+            width: 100vm;
+        }
+
+        .home-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 999;
+        }
+
+        .logo {
+            width: 80%;
+            margin-bottom: 3em;
+        }
+
+        /* github corner https://tholman.com/github-corners/ */
+
+        .github-corner {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .github-corner:hover .octo-arm {
+            animation: octocat-wave 560ms ease-in-out
+        }
+
+        @keyframes octocat-wave {
+            0%, 100% {
+                transform: rotate(0)
+            }
+            20%, 60% {
+                transform: rotate(-25deg)
+            }
+            40%, 80% {
+                transform: rotate(10deg)
+            }
+        }
+
+        /* 小屏样式 */
+        @media only screen and (max-width: 500px) {
+            .github-corner:hover .octo-arm {
+                animation: none
+            }
+
+            .github-corner .octo-arm {
+                animation: octocat-wave 560ms ease-in-out
+            }
+
+            .desktop {
+                height: 100%;
+            }
+
+            .home {
+                width: 100%;
+                height: 100%;
+                padding: 0;
+            }
+
+            .app {
+                width: 100%;
+                height: 100%;
+                background-color: transparent;
+                border-radius: 0;
+                padding: 0;
+            }
+
+            .content {
+                border-radius: 0;
+            }
+
+            .logo {
+                width: 80%;
+                margin: 3em 0;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+        }
+    </style>
+</head>
+<body>
+<a href="https://manerfan.github.io/waka-data/" type="button" class="home-btn btn btn-outline-light">HOME</a>
+<a href="https://github.com/manerfan/waka-data" target="_blank"
+   class="github-corner" aria-label="View source on GitHub">
+    <svg width="80" height="80" viewBox="0 0 250 250"
+         style="fill:#fff; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+
+<div class="desktop">
+    <div class="home">
+        <div class="app">
+            <div class="content">
+                <div class="card main">
+                    <img src="https://wakadata.oss-cn-beijing.aliyuncs.com/assets/images/manerfan.com-logo.png"
+                         class="logo rounded float-start" alt="manerfan.com"/>
+                    <h1 style="font-weight: bold; text-align:center;">技术人数据统计</h1>
+                    <h4 style="text-align: center; margin-top: 0.5em;">Waka Waki 『日统计』</h4>
+                    <h6 style="text-align: center; margin-top: 1.5em;">
+                            2021-12-25
+                    </h6>
+                </div>
+                <div class="card summary">
+                    <p>
+                            <span class="light">这一天，共投入</span><br/>
+                    </p>
+                    <p>
+                        <span class="stress">2</span>
+                        <span class="weight">小时</span>
+                        <span class="stress">13</span>
+                        <span class="weight">分钟</span>
+                    </p>
+                    <p>
+                            <span class="light">跨度从</span>
+                            <span class="stress">16:20</span>
+                            <span class="light">一直到</span>
+                            <span class="stress">19:40</span>
+                    </p>
+                        <p>
+                            <span class="light">最喜欢在</span><br/>
+                        </p>
+                        <p>
+                            <span class="stress">16:25</span>
+                            <span class="light">到</span>
+                            <span class="stress">17:25</span>
+                            <span class="light">之间搬砖</span>
+                        </p>
+                    <div id="summary" class="chart"
+                         style="width: 110%;height: 240px; position: relative; top: -20px; left: -20px;"></div>
+                </div>
+                <div class="card range">
+                    <p>
+                        <span class="light">这一天，投入</span>
+                    </p>
+                    <p style="margin-top: .5em;">
+                        <span class="light">语言占比</span>
+                    </p>
+                    <div id="language" class="chart"
+                         style="width: 100%; height: 120px; position: relative; margin-top: 10px;"></div>
+                    <p style="margin-top: 1.5em;">
+                        <span class="light">工具占比</span>
+                    </p>
+                    <div id="editor" class="chart"
+                         style="width: 100%; height: 120px; position: relative; margin-top: 10px;"></div>
+                    <p style="margin-top: 1.5em;">
+                        <span class="light">项目占比</span>
+                    </p>
+                    <div id="project" class="chart"
+                         style="width: 100%; height: 120px; position: relative; margin-top: 10px;"></div>
+                    <p style="margin-top: 1.5em;">
+                        <span class="light">动作占比</span>
+                    </p>
+                    <div id="action" class="chart"
+                         style="width: 100%; height: 120px; position: relative; margin-top: 10px;"></div>
+                </div>
+                <div class="card hard">
+                    <p>
+                        <span class="light">这一天</span><br/>
+                    </p>
+                            <p>
+                                <span class="light">共投入</span>
+                                <span class="stress">2</span>
+                                <span class="light">小时</span>
+                                <span class="stress">13</span>
+                                <span class="light">分钟</span>
+                            </p>
+                        <p>
+                                <span class="light">从</span>
+                                <span class="stress">16:20</span>
+                                <br/>
+                                <span class="light">一直到</span>
+                                <span class="stress">19:40</span>
+                        </p>
+                    <p style="margin-top: 1em;">
+                        <span class="light">截止到今天，每一天都在努力着</span><br/>
+                    </p>
+                    <div id="hard" class="chart"
+                         style="height: 120px; position: relative; top: -20px;"></div>
+                </div>
+                <!-- <div class="card category"></div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- bootstrap -->
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+<!-- echarts -->
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.min.js"></script>
+
+<script type="text/javascript">
+    const summaryDom = document.getElementById('summary');
+    const summaryChart = echarts.init(summaryDom);
+
+    const summaryOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        xAxis: {
+            data: ["00:00","00:05","00:10","00:15","00:20","00:25","00:30","00:35","00:40","00:45","00:50","00:55","01:00","01:05","01:10","01:15","01:20","01:25","01:30","01:35","01:40","01:45","01:50","01:55","02:00","02:05","02:10","02:15","02:20","02:25","02:30","02:35","02:40","02:45","02:50","02:55","03:00","03:05","03:10","03:15","03:20","03:25","03:30","03:35","03:40","03:45","03:50","03:55","04:00","04:05","04:10","04:15","04:20","04:25","04:30","04:35","04:40","04:45","04:50","04:55","05:00","05:05","05:10","05:15","05:20","05:25","05:30","05:35","05:40","05:45","05:50","05:55","06:00","06:05","06:10","06:15","06:20","06:25","06:30","06:35","06:40","06:45","06:50","06:55","07:00","07:05","07:10","07:15","07:20","07:25","07:30","07:35","07:40","07:45","07:50","07:55","08:00","08:05","08:10","08:15","08:20","08:25","08:30","08:35","08:40","08:45","08:50","08:55","09:00","09:05","09:10","09:15","09:20","09:25","09:30","09:35","09:40","09:45","09:50","09:55","10:00","10:05","10:10","10:15","10:20","10:25","10:30","10:35","10:40","10:45","10:50","10:55","11:00","11:05","11:10","11:15","11:20","11:25","11:30","11:35","11:40","11:45","11:50","11:55","12:00","12:05","12:10","12:15","12:20","12:25","12:30","12:35","12:40","12:45","12:50","12:55","13:00","13:05","13:10","13:15","13:20","13:25","13:30","13:35","13:40","13:45","13:50","13:55","14:00","14:05","14:10","14:15","14:20","14:25","14:30","14:35","14:40","14:45","14:50","14:55","15:00","15:05","15:10","15:15","15:20","15:25","15:30","15:35","15:40","15:45","15:50","15:55","16:00","16:05","16:10","16:15","16:20","16:25","16:30","16:35","16:40","16:45","16:50","16:55","17:00","17:05","17:10","17:15","17:20","17:25","17:30","17:35","17:40","17:45","17:50","17:55","18:00","18:05","18:10","18:15","18:20","18:25","18:30","18:35","18:40","18:45","18:50","18:55","19:00","19:05","19:10","19:15","19:20","19:25","19:30","19:35","19:40","19:45","19:50","19:55","20:00","20:05","20:10","20:15","20:20","20:25","20:30","20:35","20:40","20:45","20:50","20:55","21:00","21:05","21:10","21:15","21:20","21:25","21:30","21:35","21:40","21:45","21:50","21:55","22:00","22:05","22:10","22:15","22:20","22:25","22:30","22:35","22:40","22:45","22:50","22:55","23:00","23:05","23:10","23:15","23:20","23:25","23:30","23:35","23:40","23:45","23:50","23:55","00:00"],
+            min: 0,
+            max: 289,
+            axisLabel: {
+                color: '#fff'
+            },
+            axisTick: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            }
+        },
+        yAxis: {
+            min: 0,
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: false
+            }
+        },
+        series: [
+            {
+                type: 'line',
+                smooth: true,
+                showSymbol: false,
+                lineStyle: {
+                    width: 0
+                },
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {offset: 0, color: '#e03e36'},
+                        {offset: 0.5, color: '#ff7c38'},
+                        {offset: 1, color: '#fecea8'}
+                    ])
+                },
+                data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,37000,300000,300648,300000,299301,300000,300000,300000,300000,300000,300000,300000,300000,184611,0,0,0,0,123000,255325,0,0,0,0,0,0,0,0,239000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,300000,275027,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            }
+        ]
+    };
+
+    summaryChart.setOption(summaryOption);
+</script>
+
+<script type="text/javascript">
+    const languageDom = document.getElementById('language');
+    const languageChart = echarts.init(languageDom);
+    const languageOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        legend: {
+            type: 'scroll',
+            pageIconSize: 8,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        series: [
+            {
+                name: 'Radius Mode',
+                type: 'pie',
+                radius: [0, 60],
+                center: ['20%', '50%'],
+                //roseType: 'radius',
+                itemStyle: {
+                    normal: {
+                        borderRadius: 5,
+                        color: function (params) {
+                            const colorList = ["#91cc75", "#f9c958", "#ee6666", "#73c0de", "#3aa272", "#fc8453", "#9a60b4"];
+                            return colorList[params.dataIndex % 7];
+                        }
+                    }
+                },
+                label: {
+                    show: false
+                },
+                emphasis: {
+                    label: {
+                        show: true
+                    }
+                },
+                data: [{"name":"TypeScript (93.8%)","value":7513624},{"name":"Java (6.2%)","value":500290}]
+            }
+        ]
+    };
+
+    languageChart.setOption(languageOption);
+</script>
+
+<script type="text/javascript">
+    const editorDom = document.getElementById('editor');
+    const editorChart = echarts.init(editorDom);
+    const editorOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        legend: {
+            type: 'scroll',
+            pageIconSize: 8,
+            orient: 'vertical',
+            left: 'left',
+            top: 'center',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        series: [
+            {
+                name: 'Radius Mode',
+                type: 'pie',
+                radius: [0, 60],
+                center: ['80%', '50%'],
+                //roseType: 'radius',
+                itemStyle: {
+                    normal: {
+                        borderRadius: 5,
+                        color: function (params) {
+                            const colorList = ["#91cc75", "#f9c958", "#ee6666", "#73c0de", "#3aa272", "#fc8453", "#9a60b4"];
+                            return colorList[params.dataIndex % 7];
+                        }
+                    }
+                },
+                label: {
+                    show: false
+                },
+                emphasis: {
+                    label: {
+                        show: true
+                    }
+                },
+                data: [{"name":"VS Code (93.8%)","value":7513624},{"name":"IntelliJ (6.2%)","value":500290}]
+            }
+        ]
+    };
+
+    editorChart.setOption(editorOption);
+</script>
+
+
+<script type="text/javascript">
+    const projectDom = document.getElementById('project');
+    const projectChart = echarts.init(projectDom);
+    const projectOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        legend: {
+            type: 'scroll',
+            pageIconSize: 8,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        series: [
+            {
+                name: 'Radius Mode',
+                type: 'pie',
+                radius: [0, 60],
+                center: ['20%', '50%'],
+                //roseType: 'radius',
+                itemStyle: {
+                    normal: {
+                        borderRadius: 5,
+                        color: function (params) {
+                            const colorList = ["#91cc75", "#f9c958", "#ee6666", "#73c0de", "#3aa272", "#fc8453", "#9a60b4"];
+                            return colorList[params.dataIndex % 7];
+                        }
+                    }
+                },
+                label: {
+                    show: false
+                },
+                emphasis: {
+                    label: {
+                        show: true
+                    }
+                },
+                data: [{"name":"ccc3c1c (93.8%)","value":7513624},{"name":"8770266 (6.2%)","value":495301},{"name":"8494687 (0.1%)","value":4989}]
+            }
+        ]
+    };
+
+    projectChart.setOption(projectOption);
+</script>
+
+
+<script type="text/javascript">
+    const actionDom = document.getElementById('action');
+    const actionChart = echarts.init(actionDom);
+    const actionOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        legend: {
+            type: 'scroll',
+            pageIconSize: 8,
+            orient: 'vertical',
+            left: 'left',
+            top: 'center',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        series: [
+            {
+                name: 'Radius Mode',
+                type: 'pie',
+                radius: [0, 60],
+                center: ['80%', '50%'],
+                //roseType: 'radius',
+                itemStyle: {
+                    normal: {
+                        borderRadius: 5,
+                        color: function (params) {
+                            const colorList = ["#91cc75", "#f9c958", "#ee6666", "#73c0de", "#3aa272", "#fc8453", "#9a60b4"];
+                            return colorList[params.dataIndex % 7];
+                        }
+                    }
+                },
+                label: {
+                    show: false
+                },
+                emphasis: {
+                    label: {
+                        show: true
+                    }
+                },
+                data: [{"name":"Coding (100.0%)","value":8013914}]
+            }
+        ]
+    };
+
+    actionChart.setOption(actionOption);
+</script>
+
+<script type="text/javascript">
+    const hardDom = document.getElementById('hard');
+    const hardChart = echarts.init(hardDom);
+    const hardOption = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
+        visualMap: {
+            min: 0,
+            max: 53393506,
+            type: 'continuous',
+            show: false,
+            inRange: {
+                color: ['#fcfefe', '#005792'],
+                opacity: 1
+            }
+        },
+        calendar: {
+            left: 0,
+            right: 0,
+            cellSize: ['auto', 'auto'],
+            range: '2021',
+            itemStyle: {
+                borderWidth: 0.5
+            },
+            dayLabel: {
+                firstDay: 1,
+                show: false
+            },
+            monthLabel: {
+                nameMap: 'cn',
+                margin: 5,
+                fontSize: 8,
+                color: '#fff'
+            },
+            yearLabel: {show: false}
+        },
+        series: {
+            type: 'heatmap',
+            coordinateSystem: 'calendar',
+            data: [["2021-03-21",1060128],["2021-03-22",2071039],["2021-03-23",2688975],["2021-03-24",3016917],["2021-03-25",12771485],["2021-03-26",1356391],["2021-03-27",0],["2021-03-28",375362],["2021-03-29",13978283],["2021-03-30",24830784],["2021-03-31",8762216],["2021-04-01",279341],["2021-04-02",19976344],["2021-04-03",0],["2021-04-06",40976],["2021-04-07",8788863],["2021-04-08",10638342],["2021-04-09",560989],["2021-04-12",179268],["2021-05-10",7621983],["2021-05-11",22833353],["2021-05-12",27384481],["2021-05-13",23543519],["2021-05-14",22413914],["2021-05-15",9656004],["2021-05-17",6006393],["2021-05-18",19855434],["2021-05-19",5936544],["2021-05-21",6817823],["2021-05-22",1895699],["2021-05-23",16408578],["2021-05-24",10457656],["2021-06-08",22970628],["2021-06-09",12157983],["2021-06-10",31679179],["2021-06-11",11682487],["2021-06-14",12824],["2021-06-15",3413974],["2021-06-16",19337060],["2021-06-17",8864322],["2021-06-18",6613747],["2021-06-19",135395],["2021-06-20",17692575],["2021-06-21",6432976],["2021-06-22",14879306],["2021-06-23",12579267],["2021-06-24",18928190],["2021-06-25",10384415],["2021-06-26",10193586],["2021-06-27",8585430],["2021-06-28",24448991],["2021-06-29",27250836],["2021-06-30",22533284],["2021-07-01",13124722],["2021-07-02",10232936],["2021-07-03",1389579],["2021-07-05",26400261],["2021-07-06",31108743],["2021-07-07",26502414],["2021-07-08",20653887],["2021-07-09",12737510],["2021-07-12",11578552],["2021-07-13",5302726],["2021-07-14",30590339],["2021-07-15",31094815],["2021-07-16",30832739],["2021-07-18",23504750],["2021-07-19",42946210],["2021-07-20",43805574],["2021-07-21",36381414],["2021-07-22",27603449],["2021-07-23",32357669],["2021-07-24",14245961],["2021-07-25",31103146],["2021-07-26",2844352],["2021-07-27",13577221],["2021-07-28",18264636],["2021-07-29",38717439],["2021-07-30",22469000],["2021-07-31",3620000],["2021-08-02",20315734],["2021-08-03",37114179],["2021-08-04",23390000],["2021-08-05",30890000],["2021-08-06",34844000],["2021-08-07",0],["2021-08-09",31279396],["2021-08-10",36981170],["2021-08-11",34315619],["2021-08-12",36700000],["2021-08-13",33097000],["2021-08-15",18434984],["2021-08-16",43456516],["2021-08-17",36971050],["2021-08-18",43123602],["2021-08-19",37856466],["2021-08-20",29192839],["2021-08-21",6431802],["2021-08-22",31530082],["2021-08-23",48149169],["2021-08-24",38337949],["2021-08-25",40041888],["2021-08-26",44078710],["2021-08-27",27040973],["2021-08-28",3421424],["2021-08-29",13190831],["2021-08-30",39363174],["2021-08-31",36595055],["2021-09-01",38207947],["2021-09-02",34574375],["2021-09-03",23922182],["2021-09-04",2344739],["2021-09-05",0],["2021-09-06",36461000],["2021-09-07",22758000],["2021-09-08",28687562],["2021-09-09",26968546],["2021-09-10",22111572],["2021-09-11",3816261],["2021-09-12",21631525],["2021-09-14",11965512],["2021-09-15",5188477],["2021-09-16",3462648],["2021-09-19",82867],["2021-09-21",12530712],["2021-09-23",11460601],["2021-09-24",28982823],["2021-09-26",37645000],["2021-09-27",36614000],["2021-09-28",36206967],["2021-09-29",39611797],["2021-09-30",29420000],["2021-10-02",18311000],["2021-10-03",39818561],["2021-10-04",24557734],["2021-10-05",2241000],["2021-10-06",12811897],["2021-10-07",4407000],["2021-10-08",31711000],["2021-10-09",28327246],["2021-10-10",32709964],["2021-10-11",24058844],["2021-10-12",29426531],["2021-10-13",25285256],["2021-10-14",25651886],["2021-10-15",23772761],["2021-10-16",22617987],["2021-10-17",41404071],["2021-10-18",38665025],["2021-10-19",31711636],["2021-10-20",34419869],["2021-10-21",31547682],["2021-10-22",25043023],["2021-10-23",2506000],["2021-10-25",39841383],["2021-10-26",37469477],["2021-10-27",25305625],["2021-10-28",34458314],["2021-10-29",34749000],["2021-10-31",25986798],["2021-11-01",30873626],["2021-11-02",23288148],["2021-11-03",32245767],["2021-11-04",33637421],["2021-11-05",8439017],["2021-11-08",31933829],["2021-11-09",21175000],["2021-11-10",24069000],["2021-11-11",32145035],["2021-11-12",30679296],["2021-11-15",33064603],["2021-11-16",25023931],["2021-11-17",34502438],["2021-11-18",34677121],["2021-11-19",26579000],["2021-11-20",416000],["2021-11-21",13723336],["2021-11-22",38226700],["2021-11-23",34830665],["2021-11-24",32707091],["2021-11-25",21815724],["2021-11-26",8253083],["2021-11-27",433082],["2021-11-29",32047736],["2021-11-30",34730618],["2021-12-01",31720884],["2021-12-02",34373021],["2021-12-03",39470151],["2021-12-04",17086600],["2021-12-05",42769809],["2021-12-06",53393506],["2021-12-07",39376944],["2021-12-08",41188598],["2021-12-09",31424528],["2021-12-10",37617900],["2021-12-11",18455343],["2021-12-12",25048719],["2021-12-13",39364550],["2021-12-14",24924042],["2021-12-15",18987490],["2021-12-16",25021788],["2021-12-17",34584231],["2021-12-18",15332735],["2021-12-19",26035833],["2021-12-20",29825704],["2021-12-21",8769679],["2021-12-22",25707938],["2021-12-23",33767209],["2021-12-24",23983439],["2021-12-25",8013914]]
+        }
+    };
+
+    hardChart.setOption(hardOption);
+</script>
+</body>
+</html>
